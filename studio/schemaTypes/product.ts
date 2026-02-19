@@ -6,6 +6,7 @@ export const product = defineType({
   type: 'document',
   groups: [
     {name: 'core', title: 'Core'},
+    {name: 'nav', title: 'Navigation'},
     {name: 'specs', title: 'Specs'},
     {name: 'docs', title: 'Documents'},
     {name: 'seo', title: 'SEO'},
@@ -99,6 +100,24 @@ export const product = defineType({
     }),
 
     defineField({name: 'seo', title: 'SEO', type: 'seo', group: 'seo'}),
+
+    defineField({
+      name: 'showInNav',
+      title: 'Show in navigation',
+      type: 'boolean',
+      group: 'nav',
+      description: 'Surface this product in the mega menu navigation.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'navDescription',
+      title: 'Nav description',
+      type: 'string',
+      group: 'nav',
+      description: 'One-line description shown under the product name in the nav (max ~60 chars). Falls back to Summary if blank.',
+      validation: (Rule) => Rule.max(80),
+      hidden: ({document}) => !document?.showInNav,
+    }),
   ],
   preview: {select: {title: 'title', media: 'mainImage'}},
 })

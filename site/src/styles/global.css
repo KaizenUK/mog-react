@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+/* ── Navigation Design Tokens ── */
+:root {
+  /* Glass panel — thin header strip, heavier when scrolled */
+  --nav-glass-bg: rgba(10, 12, 16, 0.72);
+  --nav-glass-bg-scrolled: rgba(10, 12, 16, 0.90);
+  --nav-glass-blur: 18px;
+  --nav-glass-blur-scrolled: 26px;
+  --nav-glass-border: rgba(255, 255, 255, 0.06);
+  --nav-glass-border-scrolled: rgba(255, 255, 255, 0.10);
+  --nav-glass-highlight: rgba(255, 255, 255, 0.03);
+
+  /* Dimensions — slim like Unity */
+  --nav-height: 60px;
+  --nav-height-scrolled: 54px;
+  --nav-max-width: 1280px;
+  --nav-side-padding: 40px;
+
+  /* Typography */
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Lato', sans-serif;
+
+  /* Timing */
+  --nav-scroll-transition: 220ms ease-out;
+  --nav-panel-duration: 180ms;
+  --nav-panel-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --nav-underline-duration: 160ms;
+
+  /* Colors */
+  --nav-text: rgba(255, 255, 255, 0.88);
+  --nav-text-muted: rgba(255, 255, 255, 0.5);
+  --nav-text-hover: #ffffff;
+  --nav-accent: #c8a034;
+  --nav-overlay-bg: rgba(0, 0, 0, 0.35);
+}

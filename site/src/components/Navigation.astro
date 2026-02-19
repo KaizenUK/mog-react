@@ -1,0 +1,497 @@
+---
+import type { NavSector, NavProduct } from "../lib/sanity/navigation";
+import "../styles/navigation.css";
+
+type Props = {
+  sectors: NavSector[];
+  products: NavProduct[];
+};
+
+const { sectors, products } = Astro.props;
+
+// Icons: inline SVG paths only for the services actually rendered.
+// Lucide-style outline, viewBox 0 0 24 24, stroke-width 1.75.
+const icons = {
+  // Circular refresh arrows — Oil Regeneration
+  regeneration: `<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>`,
+  // Water droplets — MWF Fluidcare
+  droplets: `<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>`,
+  // Flask — Own Label & Toll Blending
+  flask: `<path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>`,
+  // Activity waveform — Product Testing & Analysis
+  activity: `<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>`,
+  // Truck — Waste Oil Collection
+  truck: `<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>`,
+};
+
+const services = [
+  { title: "Oil Regeneration", subtitle: "Sustainable re-refining of used industrial oils", href: "/services/oil-regeneration", icon: icons.regeneration },
+  { title: "MWF Fluidcare", subtitle: "Metalworking fluid management and monitoring", href: "/services/mwf-fluidcare", icon: icons.droplets },
+  { title: "Own Label & Toll Blending", subtitle: "Custom formulation and private label blending", href: "/services/own-label-toll-blending", icon: icons.flask },
+  { title: "Product Testing & Analysis", subtitle: "Laboratory testing and oil condition analysis", href: "/services/product-testing-analysis", icon: icons.activity },
+];
+
+const simpleLinks = [
+  { label: "News", href: "/news" },
+  { label: "About", href: "/company/about-us" },
+  { label: "Contact", href: "/contact-us" },
+];
+---
+
+<header class="site-header" data-scrolled="false" id="site-header">
+  <div class="header-inner">
+
+    <!-- Left group: Logo tight to Nav items -->
+    <div class="nav-left">
+      <a href="/" class="nav-logo" aria-label="Midland Oil Group — Home">
+        <img src="/midland-oil-group-logo.svg" alt="Midland Oil Group" width="160" height="32" />
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav" aria-label="Main">
+        <button
+          type="button"
+          class="nav-item"
+          data-panel="sectors"
+          aria-expanded="false"
+          aria-controls="panel-sectors"
+        >Sectors</button>
+
+        <button
+          type="button"
+          class="nav-item"
+          data-panel="products"
+          aria-expanded="false"
+          aria-controls="panel-products"
+        >Products</button>
+
+        <button
+          type="button"
+          class="nav-item"
+          data-panel="services"
+          aria-expanded="false"
+          aria-controls="panel-services"
+        >Services</button>
+
+        {simpleLinks.map((link) => (
+          <a href={link.href} class="nav-item">{link.label}</a>
+        ))}
+      </nav>
+    </div>
+
+    <!-- CTA — pushed to far right by margin-left: auto in CSS -->
+    <a href="/find-the-right-oil" class="nav-cta">FIND THE RIGHT OIL</a>
+
+    <!-- Mobile hamburger -->
+    <button
+      type="button"
+      class="mobile-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-drawer"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- ── Mega Menu ── -->
+  <div class="mega-menu" id="mega-menu">
+    <div class="mega-overlay"></div>
+
+    <!-- Sectors Panel -->
+    <div class="mega-panel" id="panel-sectors" role="region" aria-label="Sectors menu">
+      <div class="mega-panel-inner">
+        <div>
+          <div class="mega-category">Industries We Serve</div>
+          {sectors.slice(0, 5).map((s) => (
+            <a href={`/sectors/${s.slug}`} class="mega-block">
+              <div class="mega-block-title">{s.title}</div>
+              {s.summary && <div class="mega-block-subtitle">{s.summary}</div>}
+            </a>
+          ))}
+        </div>
+        <div>
+          {sectors.length > 5 ? (
+            <>
+              <div class="mega-category">&nbsp;</div>
+              {sectors.slice(5, 10).map((s) => (
+                <a href={`/sectors/${s.slug}`} class="mega-block">
+                  <div class="mega-block-title">{s.title}</div>
+                  {s.summary && <div class="mega-block-subtitle">{s.summary}</div>}
+                </a>
+              ))}
+            </>
+          ) : (
+            <div class="mega-category mega-empty">&nbsp;</div>
+          )}
+        </div>
+        <div>
+          {sectors.length > 10 ? (
+            <>
+              <div class="mega-category">&nbsp;</div>
+              {sectors.slice(10, 15).map((s) => (
+                <a href={`/sectors/${s.slug}`} class="mega-block">
+                  <div class="mega-block-title">{s.title}</div>
+                  {s.summary && <div class="mega-block-subtitle">{s.summary}</div>}
+                </a>
+              ))}
+            </>
+          ) : (
+            <div class="mega-category mega-empty">&nbsp;</div>
+          )}
+          <a href="/sectors" class="mega-view-all">
+            View all sectors
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="mega-cta-panel">
+          <div class="mega-category">Not sure where to start?</div>
+          <p>Tell us your application and we'll recommend the right product for your sector.</p>
+          <a href="/find-the-right-oil" class="mega-cta-link">
+            FIND THE RIGHT OIL
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Panel -->
+    <div class="mega-panel" id="panel-products" role="region" aria-label="Products menu">
+      <div class="mega-panel-inner">
+        <div>
+          <div class="mega-category">Featured Products</div>
+          {products.length > 0 ? (
+            products.slice(0, 5).map((p) => (
+              <a href={`/product/${p.slug}`} class="mega-block">
+                <div class="mega-block-title">{p.title}</div>
+                {(p.navDescription || p.summary) && (
+                  <div class="mega-block-subtitle">{p.navDescription || p.summary}</div>
+                )}
+              </a>
+            ))
+          ) : (
+            <p style="font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,0.3); padding: 8px 0;">
+              No products featured yet — mark products as "Show in nav" in Studio.
+            </p>
+          )}
+        </div>
+        <div>
+          {products.length > 5 ? (
+            <>
+              <div class="mega-category">&nbsp;</div>
+              {products.slice(5).map((p) => (
+                <a href={`/product/${p.slug}`} class="mega-block">
+                  <div class="mega-block-title">{p.title}</div>
+                  {(p.navDescription || p.summary) && (
+                    <div class="mega-block-subtitle">{p.navDescription || p.summary}</div>
+                  )}
+                </a>
+              ))}
+            </>
+          ) : (
+            <div class="mega-category mega-empty">&nbsp;</div>
+          )}
+          <a href="/products" class="mega-view-all">
+            View all products
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div>
+          <div class="mega-category">Resources</div>
+          <a href="/technical-library" class="mega-block">
+            <div class="mega-block-title">Technical Library</div>
+            <div class="mega-block-subtitle">TDS, SDS and product documentation</div>
+          </a>
+          <a href="/downloads" class="mega-block">
+            <div class="mega-block-title">Downloads</div>
+            <div class="mega-block-subtitle">Brochures, guides, specification sheets</div>
+          </a>
+        </div>
+        <div class="mega-cta-panel">
+          <div class="mega-category">Need help choosing?</div>
+          <p>Match the right lubricant to your application with our product finder.</p>
+          <a href="/find-the-right-oil" class="mega-cta-link">
+            FIND THE RIGHT OIL
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Panel -->
+    <div class="mega-panel" id="panel-services" role="region" aria-label="Services menu">
+      <div class="mega-panel-inner">
+        <div>
+          <div class="mega-category">Our Services</div>
+          {services.slice(0, 2).map((s) => (
+            <a href={s.href} class="mega-block mega-block--icon">
+              <span class="mega-block-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+              </span>
+              <span>
+                <span class="mega-block-title">{s.title}</span>
+                <span class="mega-block-subtitle">{s.subtitle}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+        <div>
+          <div class="mega-category">&nbsp;</div>
+          {services.slice(2).map((s) => (
+            <a href={s.href} class="mega-block mega-block--icon">
+              <span class="mega-block-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+              </span>
+              <span>
+                <span class="mega-block-title">{s.title}</span>
+                <span class="mega-block-subtitle">{s.subtitle}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+        <div>
+          <div class="mega-category">Additional</div>
+          <a href="/waste-oil-collection" class="mega-block mega-block--icon">
+            <span class="mega-block-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.truck} />
+            </span>
+            <span>
+              <span class="mega-block-title">Waste Oil Collection</span>
+              <span class="mega-block-subtitle">Responsible used oil collection &amp; disposal</span>
+            </span>
+          </a>
+          <a href="/services" class="mega-view-all">
+            View all services
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="mega-cta-panel">
+          <div class="mega-category">Bespoke Solutions</div>
+          <p>From custom blending to full fluidcare management — tailored to your operation.</p>
+          <a href="/services" class="mega-cta-link">
+            EXPLORE SERVICES
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer -->
+<div class="mobile-drawer-overlay" id="mobile-overlay"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <!-- Sectors accordion -->
+  <div class="mobile-section">
+    <button type="button" class="mobile-section-toggle" aria-expanded="false" data-accordion>
+      Sectors
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="mobile-section-links">
+      {sectors.map((s) => (
+        <a href={`/sectors/${s.slug}`}>{s.title}</a>
+      ))}
+      <a href="/sectors" style="color: var(--nav-accent);">View all sectors</a>
+    </div>
+  </div>
+
+  <!-- Products accordion -->
+  <div class="mobile-section">
+    <button type="button" class="mobile-section-toggle" aria-expanded="false" data-accordion>
+      Products
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="mobile-section-links">
+      {products.map((p) => (
+        <a href={`/product/${p.slug}`}>{p.title}</a>
+      ))}
+      <a href="/products" style="color: var(--nav-accent);">View all products</a>
+    </div>
+  </div>
+
+  <!-- Services accordion -->
+  <div class="mobile-section">
+    <button type="button" class="mobile-section-toggle" aria-expanded="false" data-accordion>
+      Services
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="mobile-section-links">
+      {services.map((s) => (
+        <a href={s.href}>{s.title}</a>
+      ))}
+      <a href="/services" style="color: var(--nav-accent);">View all services</a>
+    </div>
+  </div>
+
+  <!-- Simple links -->
+  {simpleLinks.map((link) => (
+    <a href={link.href} class="mobile-link">{link.label}</a>
+  ))}
+</div>
+<div class="mobile-cta-wrap">
+  <a href="/find-the-right-oil" class="mobile-cta">FIND THE RIGHT OIL</a>
+</div>
+
+<!-- Spacer to push page content below fixed header -->
+<div class="header-spacer"></div>
+
+<script type="module">
+  const header = document.getElementById("site-header");
+  const megaMenu = document.getElementById("mega-menu");
+  const triggers = header.querySelectorAll("[data-panel]");
+  const panels = megaMenu.querySelectorAll(".mega-panel");
+  const overlay = megaMenu.querySelector(".mega-overlay");
+
+  let openTimeout = null;
+  let closeTimeout = null;
+  let activePanel = null;
+
+  // ── Scroll Detection ──
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        header.dataset.scrolled = window.scrollY > 10 ? "true" : "false";
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // ── Mega Menu: Hover Logic ──
+  function showPanel(name) {
+    clearTimeout(closeTimeout);
+    if (activePanel === name) return;
+
+    // Hide previous instantly (no cross-fade gap)
+    panels.forEach((p) => delete p.dataset.visible);
+    triggers.forEach((t) => t.setAttribute("aria-expanded", "false"));
+
+    const panel = document.getElementById(`panel-${name}`);
+    const trigger = header.querySelector(`[data-panel="${name}"]`);
+
+    if (panel && trigger) {
+      panel.dataset.visible = "";
+      trigger.setAttribute("aria-expanded", "true");
+      megaMenu.dataset.active = "";
+      header.dataset.megaOpen = "";
+      activePanel = name;
+    }
+  }
+
+  function hideAll() {
+    panels.forEach((p) => delete p.dataset.visible);
+    triggers.forEach((t) => t.setAttribute("aria-expanded", "false"));
+    delete megaMenu.dataset.active;
+    delete header.dataset.megaOpen;
+    activePanel = null;
+  }
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("mouseenter", () => {
+      clearTimeout(closeTimeout);
+      const name = trigger.dataset.panel;
+      if (activePanel) {
+        // Already open — switch immediately (crossfade)
+        showPanel(name);
+      } else {
+        // First open — 120ms delay to prevent flicker
+        openTimeout = setTimeout(() => showPanel(name), 120);
+      }
+    });
+
+    trigger.addEventListener("mouseleave", () => {
+      clearTimeout(openTimeout);
+    });
+
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const name = trigger.dataset.panel;
+        activePanel === name ? hideAll() : showPanel(name);
+      }
+      if (e.key === "Escape") {
+        hideAll();
+        trigger.focus();
+      }
+    });
+  });
+
+  // Keep open while over the panel
+  megaMenu.addEventListener("mouseenter", () => clearTimeout(closeTimeout));
+
+  // 200ms dismiss delay — prevents accidental close
+  header.addEventListener("mouseleave", () => {
+    clearTimeout(openTimeout);
+    closeTimeout = setTimeout(hideAll, 200);
+  });
+
+  overlay.addEventListener("click", hideAll);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && activePanel) hideAll();
+  });
+
+  // Simple link hover dismisses any open panel
+  header.querySelectorAll(".desktop-nav a.nav-item").forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      clearTimeout(openTimeout);
+      closeTimeout = setTimeout(hideAll, 80);
+    });
+  });
+
+  // ── Mobile Drawer ──
+  const mobileToggle = header.querySelector(".mobile-toggle");
+  const drawer = document.getElementById("mobile-drawer");
+  const mobileOverlay = document.getElementById("mobile-overlay");
+
+  function openDrawer() {
+    drawer.dataset.open = "";
+    mobileOverlay.dataset.open = "";
+    mobileToggle.setAttribute("aria-expanded", "true");
+    mobileToggle.setAttribute("aria-label", "Close menu");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeDrawer() {
+    delete drawer.dataset.open;
+    delete mobileOverlay.dataset.open;
+    mobileToggle.setAttribute("aria-expanded", "false");
+    mobileToggle.setAttribute("aria-label", "Open menu");
+    document.body.style.overflow = "";
+  }
+
+  mobileToggle.addEventListener("click", () => {
+    drawer.hasAttribute("data-open") ? closeDrawer() : openDrawer();
+  });
+
+  mobileOverlay.addEventListener("click", closeDrawer);
+
+  // ── Mobile Accordions ──
+  drawer.querySelectorAll("[data-accordion]").forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      const links = toggle.nextElementSibling;
+
+      // Collapse all others
+      drawer.querySelectorAll("[data-accordion]").forEach((other) => {
+        if (other !== toggle) {
+          other.setAttribute("aria-expanded", "false");
+          delete other.nextElementSibling.dataset.expanded;
+        }
+      });
+
+      if (expanded) {
+        toggle.setAttribute("aria-expanded", "false");
+        delete links.dataset.expanded;
+      } else {
+        toggle.setAttribute("aria-expanded", "true");
+        links.dataset.expanded = "";
+      }
+    });
+  });
+</script>

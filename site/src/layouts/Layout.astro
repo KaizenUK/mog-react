@@ -1,5 +1,8 @@
 ---
 import { getSiteSettings } from "../lib/sanity/settings.ts";
+import { getNavigationData } from "../lib/sanity/navigation.ts";
+import Navigation from "../components/Navigation.astro";
+import "../styles/global.css";
 
 type Props = {
   title?: string
@@ -15,23 +18,7 @@ const {
   noIndex = false,
 } = Astro.props
 
-const settings = await getSiteSettings()
-
-// Default fallback keeps IA stable even if the Site Settings doc
-// hasn't been created yet, or primaryNav is empty.
-const defaultPrimaryNav = [
-  { label: "Sectors", href: "/sectors" },
-  { label: "Products", href: "/products" },
-  { label: "Services", href: "/services" },
-  { label: "News", href: "/news" },
-  { label: "About", href: "/company/about-us" },
-  { label: "Contact", href: "/contact-us" },
-]
-
-const primaryNav =
-  Array.isArray(settings?.primaryNav) && settings.primaryNav.length > 0
-    ? settings.primaryNav
-    : defaultPrimaryNav
+const navData = await getNavigationData();
 ---
 
 <!doctype html>
@@ -44,40 +31,18 @@ const primaryNav =
     {description && <meta name="description" content={description} />}
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Fonts: Oswald + Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Oswald:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-    <header style="border-bottom: 1px solid #eee;">
-      <div style="max-width: 1100px; margin: 0 auto; padding: 16px 24px; display:flex; gap:16px; align-items:center; justify-content:space-between;">
-        <a href="/" style="font-weight:700; text-decoration:none; color:inherit;">
-          Midland Oil Group
-        </a>
-
-        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-          <nav style="display:flex; gap:14px; flex-wrap:wrap;">
-            {primaryNav.map((item) => (
-              <a href={item.href}>{item.label}</a>
-            ))}
-          </nav>
-          
-          <a
-            href="/find-the-right-oil"
-            style="
-              display:inline-block;
-              padding: 8px 12px;
-              border: 1px solid #111;
-              border-radius: 8px;
-              text-decoration: none;
-              font-weight: 600;
-              white-space: nowrap;
-            "
-            aria-label="Find the right oil"
-          >
-            Find the right oil
-          </a>
-        </div>
-      </div>
-    </header>
+    <Navigation sectors={navData.sectors} products={navData.products} />
 
     <main style="max-width: 1100px; margin: 0 auto; padding: 24px;">
       <slot />
@@ -85,7 +50,7 @@ const primaryNav =
 
     <footer style="border-top: 1px solid #eee;">
       <div style="max-width: 1100px; margin: 0 auto; padding: 16px 24px; font-size: 14px; opacity: .8;">
-        <div>© {new Date().getFullYear()} Midland Oil Group</div>
+        <div>&copy; {new Date().getFullYear()} Midland Oil Group</div>
       </div>
     </footer>
   </body>
