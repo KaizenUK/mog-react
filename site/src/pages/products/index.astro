@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllProducts } from "../../lib/sanity/products";
+
+// Basic SSG fetch
+const products = await getAllProducts();
+---
+
+<Layout title="Products">
+  <main class="mx-auto max-w-6xl px-4 py-10">
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold">Products</h1>
+      <p class="mt-2 text-base opacity-80">
+        Browse Midland’s product range. Technical documents are available on each product page.
+      </p>
+    </header>
+
+    {products?.length ? (
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {products.map((p) => (
+          <li class="rounded-2xl border p-5">
+            <h2 class="text-lg font-semibold leading-snug">
+              <a href={`/product/${p.slug}`} class="hover:underline">
+                {p.title}
+              </a>
+            </h2>
+
+            {p.shortDescription ? (
+              <p class="mt-2 text-sm opacity-80">{p.shortDescription}</p>
+            ) : null}
+
+            <div class="mt-4">
+              <a class="text-sm font-medium hover:underline" href={`/product/${p.slug}`}>
+                View product →
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No products found.</p>
+    )}
+  </main>
+</Layout>

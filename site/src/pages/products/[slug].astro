@@ -1,0 +1,9 @@
+---
+const { slug } = Astro.params;
+
+if (!slug || slug === "undefined") {
+  return Astro.redirect("/products", 301);
+}
+
+return Astro.redirect(`/product/${slug}`, 301);
+---

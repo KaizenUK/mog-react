@@ -1,0 +1,7 @@
+---
+const {slug} = Astro.params
+
+if (!slug || slug === 'undefined') return Astro.redirect('/news', 301)
+
+return Astro.redirect(`/news/${slug}`, 301)
+---
