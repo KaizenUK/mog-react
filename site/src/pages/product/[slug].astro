@@ -1,0 +1,130 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllProductSlugs, getProductBySlug } from "../../lib/sanity/products";
+
+export async function getStaticPaths() {
+  const slugs = await getAllProductSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/products", 302);
+}
+
+const product = await getProductBySlug(slug);
+
+if (!product) {
+  return Astro.redirect("/products", 302);
+}
+
+function safeText(v) {
+  if (!v) return "";
+  return String(v);
+}
+
+// Merge product-level docs + linked technical docs into one array
+const mergedDocs = [
+  ...(product.documents ?? []).map((d) => ({
+    title: safeText(d.title),
+    docType: d.docType ? safeText(d.docType) : "",
+    language: "",
+    url: d.url ?? "",
+  })),
+  ...(product.linkedTechnicalDocuments ?? []).map((d) => ({
+    title: safeText(d.title),
+    docType: d.docType ? safeText(d.docType).toUpperCase() : "",
+    language: d.language ? safeText(d.language).toUpperCase() : "",
+    url: d.url ?? "",
+  })),
+].filter((d) => d.url);
+---
+
+<Layout title={product.title}>
+  <main class="mx-auto max-w-4xl px-4 py-10">
+    <nav class="mb-6 text-sm opacity-80">
+      <a href="/products" class="hover:underline">Products</a>
+      <span class="mx-2">/</span>
+      <span>{product.title}</span>
+    </nav>
+
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold">{product.title}</h1>
+
+      {product.shortDescription ? (
+        <p class="mt-3 text-base opacity-80">{product.shortDescription}</p>
+      ) : null}
+    </header>
+
+    {product.keySpecs?.length ? (
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold">Key specifications</h2>
+        <dl class="mt-4 grid gap-3 sm:grid-cols-2">
+          {product.keySpecs.map((s) => (
+            <div class="rounded-2xl border p-4">
+              <dt class="text-sm font-medium opacity-80">{safeText(s.label)}</dt>
+              <dd class="mt-1 text-sm">{safeText(s.value)}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ) : null}
+
+    {product.packSizes?.length ? (
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold">Pack sizes</h2>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {product.packSizes.map((ps) => (
+            <li class="rounded-full border px-4 py-2 text-sm">
+              {safeText(ps)}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null}
+
+    {mergedDocs.length ? (
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold">Technical documents</h2>
+        <ul class="mt-4 grid gap-3">
+          {mergedDocs.map((d) => (
+            <li class="rounded-2xl border p-4">
+              <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="text-sm font-medium">{d.title}</p>
+                  {(d.docType || d.language) ? (
+                    <p class="text-xs opacity-70">
+                      {d.docType}{d.docType && d.language ? " • " : ""}{d.language}
+                    </p>
+                  ) : null}
+                </div>
+
+                <a
+                  class="mt-2 inline-flex w-fit items-center justify-center rounded-full border px-4 py-2 text-sm font-medium hover:opacity-80 sm:mt-0"
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download PDF
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null}
+
+    <section class="rounded-2xl border p-6">
+      <h2 class="text-xl font-semibold">Get a quote</h2>
+      <p class="mt-2 text-sm opacity-80">
+        Tell us what you need and we’ll come back with availability and pricing.
+      </p>
+      <div class="mt-4">
+        <a class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80" href="/contact-us">
+          Enquire →
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>

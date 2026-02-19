@@ -14,6 +14,13 @@ export type ProductDoc = {
   keySpecs?: Array<{ label: string; value: string }>;
   packSizes?: string[];
   documents?: Array<{ title: string; docType?: string; url?: string }>;
+
+  linkedTechnicalDocuments?: Array<{
+    title: string;
+    docType?: string;
+    language?: string;
+    url?: string;
+  }>;
 };
 
 export async function getAllProducts(): Promise<ProductListItem[]> {
@@ -44,7 +51,6 @@ export async function getProductBySlug(slug: string): Promise<ProductDoc | null>
       "slug": slug.current,
       shortDescription,
 
-      // If your schema uses different field names, tweak these to match:
       keySpecs[] {
         label,
         value
@@ -55,6 +61,17 @@ export async function getProductBySlug(slug: string): Promise<ProductDoc | null>
       documents[] {
         title,
         docType,
+        "url": file.asset->url
+      },
+
+      "linkedTechnicalDocuments": *[
+        _type == "technicalDocument"
+        && references(^._id)
+        && defined(file.asset)
+      ] | order(docType asc, title asc) {
+        title,
+        docType,
+        language,
         "url": file.asset->url
       }
     }
