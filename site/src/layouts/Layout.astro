@@ -1,4 +1,6 @@
 ---
+import { getSiteSettings } from "../lib/sanity/settings.ts";
+
 type Props = {
   title?: string
   description?: string
@@ -12,6 +14,24 @@ const {
   canonicalUrl,
   noIndex = false,
 } = Astro.props
+
+const settings = await getSiteSettings()
+
+// Default fallback keeps IA stable even if the Site Settings doc
+// hasn't been created yet, or primaryNav is empty.
+const defaultPrimaryNav = [
+  { label: "Sectors", href: "/sectors" },
+  { label: "Products", href: "/products" },
+  { label: "Services", href: "/services" },
+  { label: "News", href: "/news" },
+  { label: "About", href: "/company/about-us" },
+  { label: "Contact", href: "/contact-us" },
+]
+
+const primaryNav =
+  Array.isArray(settings?.primaryNav) && settings.primaryNav.length > 0
+    ? settings.primaryNav
+    : defaultPrimaryNav
 ---
 
 <!doctype html>
@@ -33,16 +53,29 @@ const {
           Midland Oil Group
         </a>
 
-        <nav style="display:flex; gap:14px; flex-wrap:wrap;">
-          <a href="/find-the-right-oil">Find the right oil</a>
-          <a href="/sectors">Sectors</a>
-          <a href="/products">Products</a>
-          <a href="/services">Services</a>
-          <a href="/technical-library">Technical Library</a>
-          <a href="/news">News</a>
-          <a href="/company/about-us">About</a>
-          <a href="/contact-us">Contact</a>
-        </nav>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <nav style="display:flex; gap:14px; flex-wrap:wrap;">
+            {primaryNav.map((item) => (
+              <a href={item.href}>{item.label}</a>
+            ))}
+          </nav>
+          
+          <a
+            href="/find-the-right-oil"
+            style="
+              display:inline-block;
+              padding: 8px 12px;
+              border: 1px solid #111;
+              border-radius: 8px;
+              text-decoration: none;
+              font-weight: 600;
+              white-space: nowrap;
+            "
+            aria-label="Find the right oil"
+          >
+            Find the right oil
+          </a>
+        </div>
       </div>
     </header>
 

@@ -5,7 +5,11 @@ export async function getSiteSettings() {
   return sanityClient.fetch(groq`
     *[_type == "siteSettings"][0]{
       siteName,
-      defaultSeo
+      defaultSeo,
+      primaryNav[]{
+        label,
+        href
+      }
     }
   `)
 }
