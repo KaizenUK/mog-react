@@ -8,9 +8,21 @@ export type ProductListItem = {
 };
 
 export type ProductDoc = {
+  _id?: string;
+
   title: string;
   slug: string;
   summary?: string;
+
+  mainImage?: any;
+  body?: any[];
+
+  seo?: {
+    title?: string;
+    description?: string;
+    noIndex?: boolean;
+    canonicalUrl?: string;
+  };
 
   viscosityGrade?: string;
   approvals?: string[];
@@ -57,41 +69,49 @@ export async function getAllProductSlugs(): Promise<string[]> {
 
 export async function getProductBySlug(slug: string): Promise<ProductDoc | null> {
   const query = /* groq */ `
-    *[_type == "product" && slug.current == $slug][0]{
-      _id,
-      title,
-      "slug": slug.current,
-      summary,
+*[_type == "product" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  summary,
 
-      viscosityGrade,
-      approvals,
+  mainImage,
+  body,
 
-      // Pack sizes are objects in your schema
-      packSizes[] {
-        label,
-        sku
-      },
+seo{
+  title,
+  description,
+  noIndex,
+  canonicalUrl
+},
 
-      // Product-linked docs (preferred admin flow)
-      "productTechnicalDocuments": technicalDocuments[]->{
-        title,
-        docType,
-        language,
-        "url": file.asset->url
-      },
+  viscosityGrade,
+  approvals,
 
-      // Reverse-linked docs (doc -> relatedProducts)
-      "linkedTechnicalDocuments": *[
-        _type == "technicalDocument"
-        && references(^._id)
-        && defined(file.asset)
-      ] | order(docType asc, title asc) {
-        title,
-        docType,
-        language,
-        "url": file.asset->url
-      }
-    }
+  packSizes[] {
+    label,
+    sku
+  },
+
+  "productTechnicalDocuments": technicalDocuments[]->{
+    title,
+    docType,
+    language,
+    "url": file.asset->url
+  },
+
+  "linkedTechnicalDocuments": *[
+    _type == "technicalDocument"
+    && references(^._id)
+    && defined(file.asset)
+  ] | order(docType asc, title asc) {
+    title,
+    docType,
+    language,
+    "url": file.asset->url
+  }
+}
+
   `;
 
   const result = await sanityClient.fetch(query, { slug });
