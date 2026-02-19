@@ -1,0 +1,68 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllSectorSlugs, getSectorBySlug } from "../../lib/sanity/sectors";
+import { portableTextToHtml } from "../../lib/portableTextToHtml";
+
+export async function getStaticPaths() {
+  const slugs = await getAllSectorSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/sectors", 302);
+}
+
+const sector = await getSectorBySlug(slug);
+
+if (!sector) {
+  return Astro.redirect("/sectors", 302);
+}
+
+const bodyHtml = sector.body ? portableTextToHtml(sector.body) : "";
+---
+
+<Layout title={sector.title}>
+  <main class="mx-auto max-w-4xl px-4 py-10">
+    <nav class="mb-6 text-sm opacity-80">
+      <a href="/sectors" class="hover:underline">Sectors</a>
+      <span class="mx-2">/</span>
+      <span>{sector.title}</span>
+    </nav>
+
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold">{sector.title}</h1>
+      {sector.summary ? (
+        <p class="mt-3 text-base opacity-80">{sector.summary}</p>
+      ) : null}
+    </header>
+
+    {bodyHtml ? (
+      <section class="prose max-w-none">
+        <Fragment set:html={bodyHtml} />
+      </section>
+    ) : (
+      <section class="rounded-2xl border p-6">
+        <p class="text-sm opacity-80">
+          Content coming soon.
+        </p>
+      </section>
+    )}
+
+    <section class="mt-10 rounded-2xl border p-6">
+      <h2 class="text-xl font-semibold">Need help choosing the right oil?</h2>
+      <p class="mt-2 text-sm opacity-80">
+        Tell us your application and we’ll recommend the right product.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80" href="/find-the-right-oil">
+          Find the right oil →
+        </a>
+        <a class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80" href="/contact-us">
+          Contact us →
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>

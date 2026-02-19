@@ -1,0 +1,47 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllSectors } from "../../lib/sanity/sectors";
+
+const sectors = await getAllSectors();
+---
+
+<Layout title="Sectors">
+  <main class="mx-auto max-w-6xl px-4 py-10">
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold">Sectors</h1>
+      <p class="mt-2 text-base opacity-80">
+        Find the right lubricants and services for your industry.
+      </p>
+    </header>
+
+    {sectors?.length ? (
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {sectors.map((s) => (
+          <li class="rounded-2xl border p-5">
+            <h2 class="text-lg font-semibold leading-snug">
+              <a class="hover:underline" href={`/sectors/${s.slug}`}>
+                {s.title}
+              </a>
+            </h2>
+
+            {s.summary ? (
+              <p class="mt-2 text-sm opacity-80">{s.summary}</p>
+            ) : null}
+
+            <div class="mt-4">
+              <a class="text-sm font-medium hover:underline" href={`/sectors/${s.slug}`}>
+                View sector →
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="rounded-2xl border p-6">
+        <p class="text-sm opacity-80">
+          No sectors yet. Add sector documents in Studio to populate this page.
+        </p>
+      </div>
+    )}
+  </main>
+</Layout>
