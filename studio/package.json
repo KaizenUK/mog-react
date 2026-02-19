@@ -1,0 +1,43 @@
+{
+  "name": "mog",
+  "private": true,
+  "version": "1.0.0",
+  "main": "package.json",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@portabletext/react": "^6.0.2",
+    "@sanity/assist": "^5.0.4",
+    "@sanity/color-input": "^6.0.4",
+    "@sanity/image-url": "^2.0.3",
+    "@sanity/table": "^2.0.1",
+    "@sanity/vision": "^5.10.0",
+    "react": "^19.1",
+    "react-dom": "^19.1",
+    "sanity": "^5.10.0",
+    "styled-components": "^6.1.18",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^6.0.0",
+    "@types/react": "^19.1",
+    "eslint": "^9.28",
+    "prettier": "^3.5",
+    "typescript": "^5.8"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  }
+}
