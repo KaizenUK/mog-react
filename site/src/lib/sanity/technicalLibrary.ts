@@ -3,19 +3,23 @@ import { sanityClient } from "./client";
 
 export type TechDocListItem = {
   title: string;
-  docType?: string;
-  url?: string;
-  productSlug?: string;
+  docType: "tds" | "sds" | "other";
+  language?: string;
+  url: string;
+  tags?: string[];
+  relatedProductSlugs?: string[];
 };
 
 export async function getTechnicalLibraryItems(): Promise<TechDocListItem[]> {
   const query = /* groq */ `
-    *[_type == "technicalDoc" && defined(file.asset)]
+    *[_type == "technicalDocument" && defined(file.asset)]
     | order(title asc) {
       title,
       docType,
+      language,
+      tags,
       "url": file.asset->url,
-      "productSlug": product->slug.current
+      "relatedProductSlugs": relatedProducts[]->slug.current
     }
   `;
 
