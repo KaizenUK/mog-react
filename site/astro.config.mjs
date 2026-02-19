@@ -7,6 +7,9 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default defineConfig({
+  markdown: {
+    syntaxHighlight: false,
+  },
   integrations: [
     sanity({
       projectId: process.env.PUBLIC_SANITY_PROJECT_ID,

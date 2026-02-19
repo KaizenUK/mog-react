@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import {sanityClient} from '../../lib/sanity/client'
+import {getSiteSettings} from '../../lib/sanity/settings'
+import {mergeSeo} from '../../lib/sanity/seo'
+import groq from 'groq'
+
+const posts = await sanityClient.fetch(groq`
+  *[_type == "post" && defined(slug.current)]
+  | order(coalesce(publishedAt, _createdAt) desc)[0...50]{
+    _id,
+    title,
+    slug,
+    publishedAt,
+    _createdAt
+  }
+`)
+
+const safePosts = Array.isArray(posts)
+  ? posts
+      .map((p) => ({
+        ...p,
+        slug: typeof p?.slug === 'string' ? p.slug : p?.slug?.current,
+      }))
+      .filter((p) => typeof p.slug === 'string' && p.slug.length > 0)
+  : []
+
+const settings = await getSiteSettings()
+const seo = mergeSeo(settings?.defaultSeo, {
+  title: 'News',
+  description: 'Latest updates from Midland Oil Group.',
+})
+---
+
+<Layout title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} noIndex={seo.noIndex}>
+  <h1>News</h1>
+
+  {safePosts.length > 0 ? (
+    <ul>
+      {safePosts.map((p) => (
+        <li key={p._id}>
+          <a href={`/news/${p.slug}`}>{p.title}</a>
+          <small style="display:block;opacity:.7">
+            {(p.publishedAt || p._createdAt)?.slice(0, 10)}
+          </small>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No posts found in Sanity.</p>
+  )}
+</Layout>

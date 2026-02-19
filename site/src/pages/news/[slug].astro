@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import {sanityClient} from '../../lib/sanity/client'
+import {getSiteSettings} from '../../lib/sanity/settings'
+import {mergeSeo} from '../../lib/sanity/seo'
+import {urlForImage} from '../../lib/sanity/image.ts'
+import {portableTextToHtml} from '../../lib/portableTextToHtml'
+import groq from 'groq'
+
+export async function getStaticPaths() {
+  const slugs = await sanityClient.fetch(groq`
+    *[_type == "post" && defined(slug.current)][]{
+      "slug": slug.current
+    }
+  `)
+
+  return slugs.map((s) => ({params: {slug: s.slug}}))
+}
+
+const {slug} = Astro.params
+
+const post = await sanityClient.fetch(
+  groq`*[_type == "post" && slug.current == $slug][0]{
+    title,
+    publishedAt,
+    _createdAt,
+    mainImage,
+    body,
+    seo
+  }`,
+  {slug}
+)
+
+if (!post) return Astro.redirect('/news', 302)
+
+const settings = await getSiteSettings()
+const seo = mergeSeo(
+  settings?.defaultSeo,
+  post?.seo
+    ? {
+        title: post.seo.title ?? post.title,
+        description: post.seo.description,
+        canonicalUrl: post.seo.canonicalUrl,
+        noIndex: post.seo.noIndex,
+      }
+    : {title: post.title}
+)
+
+const heroImg = post?.mainImage
+  ? urlForImage(post.mainImage).width(1200).quality(75).auto('format').url()
+  : null
+
+const bodyHtml = post?.body ? portableTextToHtml(post.body) : ''
+---
+
+<Layout title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} noIndex={seo.noIndex}>
+  <p><a href="/news">← Back to News</a></p>
+
+  <h1>{post.title}</h1>
+
+  <div style="opacity: 0.7; margin-bottom: 16px;">
+    <time datetime={post.publishedAt || post._createdAt}>
+      {(post.publishedAt || post._createdAt)?.slice(0, 10)}
+    </time>
+  </div>
+
+  {heroImg && (
+    <img
+      src={heroImg}
+      alt={post.title}
+      loading="lazy"
+      style="width:100%; height:auto; border-radius: 12px; margin: 16px 0;"
+    />
+  )}
+
+  {bodyHtml ? <div set:html={bodyHtml} /> : <p>(No content)</p>}
+</Layout>
