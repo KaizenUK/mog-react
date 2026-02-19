@@ -13,6 +13,10 @@ export type SectorDoc = {
   summary?: string;
   body?: unknown[];
   seo?: unknown;
+
+    recommendedProducts?: Array<{ title: string; slug: string; summary?: string }>;
+
+  
 };
 
 export async function getAllSectors(): Promise<SectorListItem[]> {
@@ -41,9 +45,21 @@ export async function getSectorBySlug(slug: string): Promise<SectorDoc | null> {
       "slug": slug.current,
       summary,
       body,
-      seo
+      seo,
+
+      "recommendedProducts": *[
+        _type == "product"
+        && defined(slug.current)
+        && references(^._id)
+      ] | order(title asc) {
+        title,
+        "slug": slug.current,
+        summary
+      }
     }
   `;
+
   const result = await sanityClient.fetch(query, { slug });
   return result || null;
 }
+

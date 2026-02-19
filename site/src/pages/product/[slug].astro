@@ -24,21 +24,25 @@ function safeText(v) {
   return String(v);
 }
 
-// Merge product-level docs + linked technical docs into one array
-const mergedDocs = [
-  ...(product.documents ?? []).map((d) => ({
-    title: safeText(d.title),
-    docType: d.docType ? safeText(d.docType) : "",
-    language: "",
-    url: d.url ?? "",
-  })),
-  ...(product.linkedTechnicalDocuments ?? []).map((d) => ({
+const docsA = product.productTechnicalDocuments ?? [];
+const docsB = product.linkedTechnicalDocuments ?? [];
+
+const mergedDocs = [...docsA, ...docsB]
+  .map((d) => ({
     title: safeText(d.title),
     docType: d.docType ? safeText(d.docType).toUpperCase() : "",
     language: d.language ? safeText(d.language).toUpperCase() : "",
     url: d.url ?? "",
-  })),
-].filter((d) => d.url);
+  }))
+  .filter((d) => d.url);
+
+// Dedupe by URL so you can link either way without duplicates
+const seen = new Set();
+const uniqueDocs = mergedDocs.filter((d) => {
+  if (seen.has(d.url)) return false;
+  seen.add(d.url);
+  return true;
+});
 ---
 
 <Layout title={product.title}>
@@ -52,21 +56,35 @@ const mergedDocs = [
     <header class="mb-8">
       <h1 class="text-3xl font-semibold">{product.title}</h1>
 
-      {product.shortDescription ? (
-        <p class="mt-3 text-base opacity-80">{product.shortDescription}</p>
+      {product.summary ? (
+        <p class="mt-3 text-base opacity-80">{product.summary}</p>
       ) : null}
     </header>
 
-    {product.keySpecs?.length ? (
+    {(product.viscosityGrade || product.approvals?.length) ? (
       <section class="mb-10">
         <h2 class="text-xl font-semibold">Key specifications</h2>
+
         <dl class="mt-4 grid gap-3 sm:grid-cols-2">
-          {product.keySpecs.map((s) => (
+          {product.viscosityGrade ? (
             <div class="rounded-2xl border p-4">
-              <dt class="text-sm font-medium opacity-80">{safeText(s.label)}</dt>
-              <dd class="mt-1 text-sm">{safeText(s.value)}</dd>
+              <dt class="text-sm font-medium opacity-80">Viscosity grade</dt>
+              <dd class="mt-1 text-sm">{product.viscosityGrade}</dd>
             </div>
-          ))}
+          ) : null}
+
+          {product.approvals?.length ? (
+            <div class="rounded-2xl border p-4 sm:col-span-2">
+              <dt class="text-sm font-medium opacity-80">Approvals / specs</dt>
+              <dd class="mt-2 text-sm">
+                <ul class="flex flex-wrap gap-2">
+                  {product.approvals.map((a) => (
+                    <li class="rounded-full border px-3 py-1 text-xs">{safeText(a)}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          ) : null}
         </dl>
       </section>
     ) : null}
@@ -74,21 +92,22 @@ const mergedDocs = [
     {product.packSizes?.length ? (
       <section class="mb-10">
         <h2 class="text-xl font-semibold">Pack sizes</h2>
-        <ul class="mt-4 flex flex-wrap gap-2">
+        <ul class="mt-4 grid gap-3 sm:grid-cols-2">
           {product.packSizes.map((ps) => (
-            <li class="rounded-full border px-4 py-2 text-sm">
-              {safeText(ps)}
+            <li class="rounded-2xl border p-4">
+              <p class="text-sm font-medium">{safeText(ps.label)}</p>
+              {ps.sku ? <p class="mt-1 text-xs opacity-70">SKU: {safeText(ps.sku)}</p> : null}
             </li>
           ))}
         </ul>
       </section>
     ) : null}
 
-    {mergedDocs.length ? (
+    {uniqueDocs.length ? (
       <section class="mb-10">
         <h2 class="text-xl font-semibold">Technical documents</h2>
         <ul class="mt-4 grid gap-3">
-          {mergedDocs.map((d) => (
+          {uniqueDocs.map((d) => (
             <li class="rounded-2xl border p-4">
               <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
