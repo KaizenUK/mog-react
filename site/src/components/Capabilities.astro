@@ -59,9 +59,9 @@ const tiles = defaultTiles.map((def, i) => ({
 
 <style>
   .capabilities {
-    background: var(--page-bg-alt);
+    background: #f0ede6;
     padding: var(--section-py) var(--section-px);
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
   }
 
   .capabilities__inner {
@@ -75,7 +75,7 @@ const tiles = defaultTiles.map((def, i) => ({
     font-weight: 400;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--nav-accent);
+    color: #9a7820;
     margin: 0 0 20px;
   }
 
@@ -83,7 +83,7 @@ const tiles = defaultTiles.map((def, i) => ({
     font-family: var(--font-body);
     font-size: clamp(17px, 1.7vw, 20px);
     line-height: 1.75;
-    color: var(--text-primary);
+    color: #3a3f4a;
     max-width: 720px;
     margin: 0 0 52px;
   }
@@ -93,8 +93,8 @@ const tiles = defaultTiles.map((def, i) => ({
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
-    background: var(--border-subtle);
-    border: 1px solid var(--border-subtle);
+    background: rgba(0, 0, 0, 0.10);
+    border: 1px solid rgba(0, 0, 0, 0.10);
     margin-bottom: 48px;
   }
 
@@ -147,16 +147,19 @@ const tiles = defaultTiles.map((def, i) => ({
   /* ── Callout ── */
   .capabilities__callout {
     padding: 30px 36px;
-    background: var(--page-bg-callout);
-    border-left: 3px solid var(--nav-accent);
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-left: 3px solid #9a7820;
     max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .capabilities__callout-body {
     font-family: var(--font-body);
     font-size: clamp(14px, 1.4vw, 16px);
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.72);
+    color: #3a3f4a;
     margin: 0;
     font-style: italic;
   }
