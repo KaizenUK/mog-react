@@ -6,6 +6,8 @@ import {schemaTypes} from './schemaTypes'
 import {locations, mainDocuments} from './lib/presentation/resolve'
 import { assist } from '@sanity/assist'
 
+console.log(process.env.SANITY_STUDIO_PROJECT_ID)
+
 export default defineConfig({
   name: 'default',
   title: 'MOG',

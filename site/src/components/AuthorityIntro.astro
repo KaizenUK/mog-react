@@ -3,12 +3,27 @@
 
 <section class="authority">
   <div class="authority__inner">
-    <h2 class="authority__heading">
-      Lubricant Suppliers &amp; Manufacturers West Midlands, UK
-    </h2>
-    <p class="authority__body">
-      When you need reliable, high-performing oils and lubricants, you need a company you can rely on to supply you with the high-quality products you need. Here at Midland Oil Group, we're one of the UK's leading lubricant suppliers. We manufacture everything from engine oils and industrial oils, to agricultural oils and metalworking fluids, among other commercial lubricants.
-    </p>
+
+    <p class="authority__eyebrow">About Midland Oil Group</p>
+
+    <div class="authority__layout">
+      <div class="authority__left">
+        <h2 class="authority__heading">
+          Lubricant Suppliers &amp; Manufacturers<br/>West Midlands, UK
+        </h2>
+        <div class="authority__rule" aria-hidden="true"></div>
+      </div>
+
+      <div class="authority__right">
+        <p class="authority__body">
+          When you need reliable, high-performing oils and lubricants, Midland Oil Group is one of the UK's leading lubricant suppliers — manufacturing everything from engine oils and industrial oils to agricultural oils and metalworking fluids.
+        </p>
+        <p class="authority__body authority__body--secondary">
+          As an independently owned UK manufacturer based in the West Midlands, we combine over 150 years of industry experience with an in-house laboratory, blending facility, and nationwide distribution network.
+        </p>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -20,27 +35,70 @@
   }
 
   .authority__inner {
-    max-width: 820px;
+    max-width: var(--page-max);
     margin: 0 auto;
+  }
+
+  .authority__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--nav-accent);
+    margin: 0 0 32px;
+  }
+
+  .authority__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
   }
 
   .authority__heading {
     font-family: var(--font-heading);
-    font-size: clamp(26px, 3.5vw, 40px);
+    font-size: clamp(24px, 3vw, 38px);
     font-weight: 600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--text-primary);
     margin: 0 0 24px;
-    line-height: 1.15;
+    line-height: 1.12;
+  }
+
+  .authority__rule {
+    width: 48px;
+    height: 2px;
+    background: var(--nav-accent);
+    opacity: 0.7;
   }
 
   .authority__body {
     font-family: var(--font-body);
-    font-size: clamp(15px, 1.5vw, 17px);
-    line-height: 1.75;
+    font-size: clamp(16px, 1.6vw, 19px);
+    line-height: 1.78;
     color: var(--text-secondary);
-    margin: 0;
-    max-width: 72ch;
+    margin: 0 0 20px;
+  }
+
+  .authority__body:last-child {
+    margin-bottom: 0;
+  }
+
+  .authority__body--secondary {
+    color: var(--text-muted);
+    font-size: clamp(15px, 1.5vw, 17px);
+  }
+
+  @media (max-width: 780px) {
+    .authority__layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .authority__rule {
+      display: none;
+    }
   }
 </style>

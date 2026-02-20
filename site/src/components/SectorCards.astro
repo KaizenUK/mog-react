@@ -10,20 +10,11 @@ const { sectors } = Astro.props;
 
 <section class="sectors">
   <div class="sectors__inner">
-    <div class="sectors__prose">
-      <p class="sectors__body">
-        We manufacture and supply high-performance lubricants and oils for a wide-range of sectors, including Industrial, Manufacturing, Commercial Vehicles, Agricultural, Automotive Passenger Car, Heat Treatment and many more. Explore a wide range of products suitable for all lubricating applications.
-      </p>
-      <p class="sectors__body">
-        We are specialists in the formulation &amp; manufacturing of industrial oils, metal cutting fluids, and metalworking lubricants for the engineering &amp; manufacturing sectors. Over 250 products available for all applications.
-      </p>
-      <p class="sectors__body">
-        Specialists in small pack filling: from syringes to automotive packs, including chemicals, medicines, oils, greases, waxes and much more. With over 40 years' experience and unique technology, Kwikfill can formulate, blend, and package a wide range of small-pack items, including NHS and automotive products.
-      </p>
-      <p class="sectors__body">
-        Midland Oil Group Ltd has a brand to cover every sector of the lubricants industry. Our lubricating oils are made for commercial, manufacturing, agricultural, automotive, and industrial use. With a product for every application, whether it be for a passenger car, an industrial plant, or metalworking machine, our products guarantee reliability and high performance across a wide-range of industries.
-      </p>
-    </div>
+
+    <p class="sectors__eyebrow">Industries We Serve</p>
+    <p class="sectors__lead">
+      High-performance lubricants and oils manufactured for automotive, agricultural, industrial, commercial vehicle, and manufacturing sectors — with over 250 specialist products available.
+    </p>
 
     {sectors.length > 0 && (
       <div class="sectors__grid">
@@ -53,21 +44,23 @@ const { sectors } = Astro.props;
     margin: 0 auto;
   }
 
-  .sectors__prose {
-    max-width: 860px;
-    margin-bottom: 52px;
-  }
-
-  .sectors__body {
-    font-family: var(--font-body);
-    font-size: clamp(15px, 1.5vw, 17px);
-    line-height: 1.8;
-    color: var(--text-secondary);
+  .sectors__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--nav-accent);
     margin: 0 0 20px;
   }
 
-  .sectors__body:last-child {
-    margin-bottom: 0;
+  .sectors__lead {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 1.6vw, 18px);
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin: 0 0 48px;
   }
 
   .sectors__grid {
@@ -106,8 +99,8 @@ const { sectors } = Astro.props;
 
   .sector-card__summary {
     font-family: var(--font-body);
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.65;
     color: var(--text-muted);
     margin: 0;
     flex: 1;

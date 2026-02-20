@@ -39,8 +39,9 @@
 :root {
   /* Backgrounds */
   --page-bg: #080a0d;
-  --page-bg-alt: #0d0f14;
+  --page-bg-alt: #0d1018;       /* slightly cooler/deeper than before for contrast */
   --page-bg-callout: #0b0d11;
+  --page-bg-mid: #111620;       /* lifted mid-tone — use for visual break sections */
 
   /* Layout */
   --page-max: 1200px;
@@ -55,4 +56,23 @@
   /* Borders */
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-gold: rgba(200, 160, 52, 0.35);
+}
+
+/* ── Global base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 17px;   /* base for any rem values; also lifts browser-default 16px */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background: var(--page-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

@@ -2,28 +2,38 @@
 const stats = [
   {
     figure: "5,000+",
-    sentence:
-      "With over 5000 products across the brands, our expert team of oil blenders can recommend lubricants based on your specific needs. Our in house laboratory team can formulate new products in line with the ongoing demand for new technology, giving us the flexibility to provide bespoke lubricant solutions for our clients.",
+    countTo: 5000,
+    label: "Products",
+    sentence: "Across our brand portfolio, with bespoke formulation available for specific client needs via our in-house laboratory team.",
   },
   {
     figure: "40+",
-    sentence:
-      "Specialists in small pack filling: from syringes to automotive packs, including chemicals, medicines, oils, greases, waxes and much more. With over 40 years' experience and unique technology, Kwikfill can formulate, blend, and package a wide range of small-pack items, including NHS and automotive products.",
+    countTo: 40,
+    label: "Years' Experience",
+    sentence: "In specialist small-pack filling — from NHS syringes and pharmaceutical lines to automotive and industrial packs.",
   },
   {
     figure: "250+",
-    sentence:
-      "We are specialists in the formulation & manufacturing of industrial oils, metal cutting fluids, and metalworking lubricants for the engineering & manufacturing sectors. Over 250 products available for all applications.",
+    countTo: 250,
+    label: "Industrial Products",
+    sentence: "Covering cutting fluids, metalworking lubricants, and engineering oils for the manufacturing and engineering sectors.",
   },
 ];
 ---
 
 <section class="proof">
   <div class="proof__inner">
+    <p class="proof__eyebrow">By The Numbers</p>
     <div class="proof__grid">
       {stats.map((stat, i) => (
         <div class="proof__stat">
-          <span class="proof__figure">{stat.figure}</span>
+          <span
+            class="proof__figure"
+            data-count={stat.countTo}
+            data-original={stat.figure}
+            aria-label={stat.figure}
+          >{stat.figure}</span>
+          <span class="proof__label">{stat.label}</span>
           <p class="proof__sentence">{stat.sentence}</p>
           {i < stats.length - 1 && <div class="proof__divider" aria-hidden="true" />}
         </div>
@@ -32,9 +42,65 @@ const stats = [
   </div>
 </section>
 
+<script>
+  const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  function animateFigure(el: HTMLElement) {
+    const target = parseInt(el.dataset.count ?? "0");
+    const original = el.dataset.original ?? "";
+    const hasSuffix = original.includes("+");
+    const duration = 1600;
+    const start = performance.now();
+
+    function tick(now: number) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const value = Math.round(easeOut(progress) * target);
+
+      const formatted =
+        target >= 1000
+          ? new Intl.NumberFormat("en-GB").format(value)
+          : String(value);
+
+      el.textContent = formatted + (hasSuffix ? "+" : "");
+
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    // Start from 0
+    el.textContent = "0" + (hasSuffix ? "+" : "");
+    requestAnimationFrame(tick);
+  }
+
+  const stats = document.querySelectorAll<HTMLElement>(".proof__stat");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        // Reveal the card
+        (entry.target as HTMLElement).classList.add("is-visible");
+        // Find the figure inside and animate it
+        const fig = entry.target.querySelector<HTMLElement>(".proof__figure[data-count]");
+        if (fig) animateFigure(fig);
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  stats.forEach((el, i) => {
+    // Stagger reveal via CSS custom property
+    el.style.setProperty("--stagger", String(i));
+    observer.observe(el);
+  });
+</script>
+
 <style>
   .proof {
-    background: var(--page-bg-alt);
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(200, 160, 52, 0.07) 0%, transparent 60%),
+      var(--page-bg-alt);
     padding: var(--section-py) var(--section-px);
     border-top: 1px solid var(--border-subtle);
   }
@@ -44,6 +110,17 @@ const stats = [
     margin: 0 auto;
   }
 
+  .proof__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--nav-accent);
+    margin: 0 0 52px;
+    text-align: center;
+  }
+
   .proof__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -51,9 +128,20 @@ const stats = [
     position: relative;
   }
 
+  /* ── Reveal animation ── */
   .proof__stat {
     padding: 0 40px;
     position: relative;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.6s ease calc(var(--stagger, 0) * 120ms),
+      transform 0.6s ease calc(var(--stagger, 0) * 120ms);
+  }
+
+  .proof__stat.is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   .proof__stat:first-child {
@@ -67,18 +155,31 @@ const stats = [
   .proof__figure {
     display: block;
     font-family: var(--font-heading);
-    font-size: clamp(48px, 6vw, 72px);
+    font-size: clamp(56px, 7vw, 88px);
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     color: var(--nav-accent);
     line-height: 1;
+    margin-bottom: 8px;
+    /* Subtle glow on the number */
+    text-shadow: 0 0 40px rgba(200, 160, 52, 0.25);
+  }
+
+  .proof__label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
     margin-bottom: 20px;
   }
 
   .proof__sentence {
     font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 15px;
+    line-height: 1.75;
     color: var(--text-secondary);
     margin: 0;
   }

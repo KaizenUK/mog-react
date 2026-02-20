@@ -1,23 +1,87 @@
 ---
+const services = [
+  {
+    title: "New Oil Manufacturing",
+    desc: "UK-manufactured lubricants to strict batch standards with full quality control.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9 3h6M10.5 3v5.5L6 16a4 4 0 0012 0l-4.5-7.5V3"/>
+      <line x1="7" y1="13" x2="17" y2="13"/>
+    </svg>`,
+  },
+  {
+    title: "Waste Oil Regeneration",
+    desc: "End-of-life lubricants restored to new-oil specification using 70-year-proven methods.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 12a9 9 0 009 9 9 9 0 006.36-2.64"/>
+      <path d="M21 12A9 9 0 0012 3a9 9 0 00-6.36 2.64"/>
+      <polyline points="16 16 21.36 9.36 15 7"/>
+      <polyline points="8 8 2.64 14.64 9 17"/>
+    </svg>`,
+  },
+  {
+    title: "Own-Label Toll Blending",
+    desc: "Bespoke blending, in-house graphic design, and fully custom-branded packaging runs.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+      <circle cx="7" cy="7" r="1.5"/>
+    </svg>`,
+  },
+  {
+    title: "Laboratory R&D",
+    desc: "In-house formulation, product testing, and full approval pipelines for new lubricants.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M6 2h12v6l3 8a2 2 0 01-2 2H5a2 2 0 01-2-2l3-8V2z"/>
+      <line x1="6" y1="8" x2="18" y2="8"/>
+      <circle cx="10" cy="13" r="1"/>
+      <circle cx="14" cy="15" r="0.8"/>
+    </svg>`,
+  },
+  {
+    title: "Small-Pack Filling",
+    desc: "Specialist filling from syringes to automotive packs — NHS, chemical, and lubricant lines.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="3" y1="9" x2="21" y2="9"/>
+      <line x1="9" y1="21" x2="9" y2="9"/>
+    </svg>`,
+  },
+  {
+    title: "Nationwide Distribution",
+    desc: "Efficient packaging and next-day bulk supply across the whole of the UK.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="1" y="3" width="15" height="13" rx="1"/>
+      <path d="M16 8h4l3 5v4h-7V8z"/>
+      <circle cx="5.5" cy="18.5" r="2.5"/>
+      <circle cx="18.5" cy="18.5" r="2.5"/>
+    </svg>`,
+  },
+];
 ---
 
 <section class="capabilities">
   <div class="capabilities__inner">
-    <p class="capabilities__body">
-      With over 150 years' combined experience, we provide a complete in-house service for end-users, distributors, and blenders. Our services encompass everything from new oil manufacturing to waste oil recycling, own label toll blending, CNC machine servicing, and the supply of our own-label, high-performing lubricating oils.
+
+    <p class="capabilities__eyebrow">What We Do</p>
+    <p class="capabilities__lead">
+      With over 150 years' combined experience, we provide a complete in-house service — from new oil manufacturing to waste oil regeneration — for end-users, distributors, and blenders across the UK.
     </p>
-    <p class="capabilities__body">
-      This extensive setup allows us to handle everything from product formulation to packaging and distribution, all under one roof, ensuring efficiency and consistency across all product lines.
-    </p>
-    <p class="capabilities__body">
-      Our dedication to quality and innovation has made us leading lubricant suppliers in the region. We are trusted by industries that rely on high-performance engine oils and industrial oils to keep their business operations running smoothly. As an independently-owned UK oil refinery based in Dudley near Birmingham, we have the industry expertise to find a bespoke solution to your lubricants problem, no matter where you're based in the UK.
-    </p>
+
+    <div class="capabilities__grid">
+      {services.map((svc) => (
+        <div class="cap-tile">
+          <span class="cap-tile__icon" set:html={svc.icon} />
+          <h3 class="cap-tile__title">{svc.title}</h3>
+          <p class="cap-tile__desc">{svc.desc}</p>
+        </div>
+      ))}
+    </div>
 
     <div class="capabilities__callout">
       <p class="capabilities__callout-body">
-        A unique service offering to the lubricant industry: we take end of life lubricants classified as waste and regenerate them back into the industry as new oils. We use tried and tested engineering methods dating back over 70 years, allowing us to offer sustainable, environmentally-friendly lubricating solutions.
+        A unique service offering to the lubricant industry: we take end-of-life lubricants classified as waste and regenerate them back into the industry as new oils. Using tried and tested engineering methods dating back over 70 years, we deliver sustainable, environmentally-friendly solutions — a powerful tool in today's world.
       </p>
     </div>
+
   </div>
 </section>
 
@@ -29,34 +93,113 @@
   }
 
   .capabilities__inner {
-    max-width: 860px;
+    max-width: var(--page-max);
     margin: 0 auto;
   }
 
-  .capabilities__body {
-    font-family: var(--font-body);
-    font-size: clamp(15px, 1.5vw, 17px);
-    line-height: 1.8;
-    color: var(--text-secondary);
-    margin: 0 0 24px;
+  .capabilities__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--nav-accent);
+    margin: 0 0 20px;
   }
 
+  .capabilities__lead {
+    font-family: var(--font-body);
+    font-size: clamp(17px, 1.7vw, 20px);
+    line-height: 1.75;
+    color: var(--text-primary);
+    max-width: 720px;
+    margin: 0 0 52px;
+  }
+
+  /* ── Service grid ── */
+  .capabilities__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 48px;
+  }
+
+  .cap-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 32px 28px;
+    background: var(--page-bg-alt);
+    transition: background 220ms ease;
+  }
+
+  .cap-tile:hover {
+    background: rgba(200, 160, 52, 0.04);
+  }
+
+  .cap-tile__icon {
+    display: block;
+    width: 36px;
+    height: 36px;
+    color: var(--nav-accent);
+    flex-shrink: 0;
+  }
+
+  .cap-tile__icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .cap-tile__title {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .cap-tile__desc {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ── Callout ── */
   .capabilities__callout {
-    margin-top: 40px;
-    padding: 32px 36px;
+    padding: 30px 36px;
     background: var(--page-bg-callout);
     border-left: 3px solid var(--nav-accent);
+    max-width: 860px;
   }
 
   .capabilities__callout-body {
     font-family: var(--font-body);
-    font-size: clamp(15px, 1.5vw, 17px);
+    font-size: clamp(14px, 1.4vw, 16px);
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(255, 255, 255, 0.72);
     margin: 0;
+    font-style: italic;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
+    .capabilities__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .capabilities__grid {
+      grid-template-columns: 1fr;
+    }
+
     .capabilities__callout {
       padding: 24px 20px;
     }
