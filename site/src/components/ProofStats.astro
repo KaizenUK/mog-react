@@ -1,0 +1,109 @@
+---
+const stats = [
+  {
+    figure: "5,000+",
+    sentence:
+      "With over 5000 products across the brands, our expert team of oil blenders can recommend lubricants based on your specific needs. Our in house laboratory team can formulate new products in line with the ongoing demand for new technology, giving us the flexibility to provide bespoke lubricant solutions for our clients.",
+  },
+  {
+    figure: "40+",
+    sentence:
+      "Specialists in small pack filling: from syringes to automotive packs, including chemicals, medicines, oils, greases, waxes and much more. With over 40 years' experience and unique technology, Kwikfill can formulate, blend, and package a wide range of small-pack items, including NHS and automotive products.",
+  },
+  {
+    figure: "250+",
+    sentence:
+      "We are specialists in the formulation & manufacturing of industrial oils, metal cutting fluids, and metalworking lubricants for the engineering & manufacturing sectors. Over 250 products available for all applications.",
+  },
+];
+---
+
+<section class="proof">
+  <div class="proof__inner">
+    <div class="proof__grid">
+      {stats.map((stat, i) => (
+        <div class="proof__stat">
+          <span class="proof__figure">{stat.figure}</span>
+          <p class="proof__sentence">{stat.sentence}</p>
+          {i < stats.length - 1 && <div class="proof__divider" aria-hidden="true" />}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .proof {
+    background: var(--page-bg-alt);
+    padding: var(--section-py) var(--section-px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .proof__inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  .proof__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .proof__stat {
+    padding: 0 40px;
+    position: relative;
+  }
+
+  .proof__stat:first-child {
+    padding-left: 0;
+  }
+
+  .proof__stat:last-child {
+    padding-right: 0;
+  }
+
+  .proof__figure {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--nav-accent);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .proof__sentence {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .proof__divider {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--border-gold) 20%, var(--border-gold) 80%, transparent);
+  }
+
+  @media (max-width: 900px) {
+    .proof__grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .proof__stat {
+      padding: 0;
+    }
+
+    .proof__divider {
+      display: none;
+    }
+  }
+</style>

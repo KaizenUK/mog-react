@@ -1,0 +1,106 @@
+---
+---
+
+<section class="final-cta">
+  <div class="final-cta__inner">
+    <h2 class="final-cta__heading">
+      Lubricant Manufacturers &amp; Wholesalers West Midlands
+    </h2>
+    <div class="final-cta__buttons">
+      <a class="final-cta__btn final-cta__btn--primary" href="/products">Find the Right Oil</a>
+      <a class="final-cta__btn final-cta__btn--secondary" href="/products">Our Products</a>
+      <a class="final-cta__btn final-cta__btn--ghost" href="/contact">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final-cta {
+    background: var(--page-bg-callout);
+    padding: var(--section-py) var(--section-px);
+    border-top: 2px solid var(--nav-accent);
+    text-align: center;
+  }
+
+  .final-cta__inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  .final-cta__heading {
+    font-family: var(--font-heading);
+    font-size: clamp(24px, 3.5vw, 42px);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0 0 36px;
+    line-height: 1.15;
+  }
+
+  .final-cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .final-cta__btn {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease;
+  }
+
+  .final-cta__btn--primary {
+    background: linear-gradient(135deg, var(--nav-accent), #b8922e);
+    color: #fff;
+    box-shadow: 0 0 16px rgba(200, 160, 52, 0.2);
+  }
+
+  .final-cta__btn--primary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 28px rgba(200, 160, 52, 0.38);
+  }
+
+  .final-cta__btn--secondary {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .final-cta__btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.32);
+    transform: scale(1.02);
+  }
+
+  .final-cta__btn--ghost {
+    background: transparent;
+    color: var(--nav-accent);
+    border: 1px solid var(--border-gold);
+  }
+
+  .final-cta__btn--ghost:hover {
+    background: rgba(200, 160, 52, 0.08);
+    border-color: var(--nav-accent);
+    color: var(--nav-accent);
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 480px) {
+    .final-cta__buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .final-cta__btn {
+      text-align: center;
+    }
+  }
+</style>

@@ -34,3 +34,25 @@
   --nav-accent: #c8a034;
   --nav-overlay-bg: rgba(0, 0, 0, 0.35);
 }
+
+/* ── Page / Section Design Tokens ── */
+:root {
+  /* Backgrounds */
+  --page-bg: #080a0d;
+  --page-bg-alt: #0d0f14;
+  --page-bg-callout: #0b0d11;
+
+  /* Layout */
+  --page-max: 1200px;
+  --section-py: clamp(60px, 8vw, 100px);
+  --section-px: clamp(20px, 5vw, 60px);
+
+  /* Text */
+  --text-primary: rgba(255, 255, 255, 0.88);
+  --text-secondary: rgba(255, 255, 255, 0.60);
+  --text-muted: rgba(255, 255, 255, 0.38);
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-gold: rgba(200, 160, 52, 0.35);
+}

@@ -1,0 +1,136 @@
+---
+import type { NavSector } from "../lib/sanity/navigation";
+
+type Props = {
+  sectors: NavSector[];
+};
+
+const { sectors } = Astro.props;
+---
+
+<section class="sectors">
+  <div class="sectors__inner">
+    <div class="sectors__prose">
+      <p class="sectors__body">
+        We manufacture and supply high-performance lubricants and oils for a wide-range of sectors, including Industrial, Manufacturing, Commercial Vehicles, Agricultural, Automotive Passenger Car, Heat Treatment and many more. Explore a wide range of products suitable for all lubricating applications.
+      </p>
+      <p class="sectors__body">
+        We are specialists in the formulation &amp; manufacturing of industrial oils, metal cutting fluids, and metalworking lubricants for the engineering &amp; manufacturing sectors. Over 250 products available for all applications.
+      </p>
+      <p class="sectors__body">
+        Specialists in small pack filling: from syringes to automotive packs, including chemicals, medicines, oils, greases, waxes and much more. With over 40 years' experience and unique technology, Kwikfill can formulate, blend, and package a wide range of small-pack items, including NHS and automotive products.
+      </p>
+      <p class="sectors__body">
+        Midland Oil Group Ltd has a brand to cover every sector of the lubricants industry. Our lubricating oils are made for commercial, manufacturing, agricultural, automotive, and industrial use. With a product for every application, whether it be for a passenger car, an industrial plant, or metalworking machine, our products guarantee reliability and high performance across a wide-range of industries.
+      </p>
+    </div>
+
+    {sectors.length > 0 && (
+      <div class="sectors__grid">
+        {sectors.map((sector) => (
+          <a class="sector-card" href={`/sectors/${sector.slug}`}>
+            <h3 class="sector-card__title">{sector.title}</h3>
+            {sector.summary && (
+              <p class="sector-card__summary">{sector.summary}</p>
+            )}
+            <span class="sector-card__link">Explore &rarr;</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .sectors {
+    background: var(--page-bg);
+    padding: var(--section-py) var(--section-px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .sectors__inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  .sectors__prose {
+    max-width: 860px;
+    margin-bottom: 52px;
+  }
+
+  .sectors__body {
+    font-family: var(--font-body);
+    font-size: clamp(15px, 1.5vw, 17px);
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin: 0 0 20px;
+  }
+
+  .sectors__body:last-child {
+    margin-bottom: 0;
+  }
+
+  .sectors__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .sector-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px 24px;
+    background: var(--page-bg);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+
+  .sector-card:hover {
+    border-left-color: var(--nav-accent);
+    background: rgba(200, 160, 52, 0.04);
+  }
+
+  .sector-card__title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .sector-card__summary {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+    flex: 1;
+  }
+
+  .sector-card__link {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--nav-accent);
+    margin-top: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .sectors__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .sectors__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

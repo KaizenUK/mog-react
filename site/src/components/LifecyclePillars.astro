@@ -1,0 +1,215 @@
+---
+const pillars = [
+  {
+    ordinal: "01",
+    title: "Formulation",
+    body: "Through the extensive laboratory work, the product is developed through thorough R&D, supported trials and then finally approvals for the launch of a new lubricant to market.",
+  },
+  {
+    ordinal: "02",
+    title: "Manufacture",
+    body: "Manufactured in Halesowen, UK, the product follows a strict laboratory batch method, quality control is applied throughout testing, until passing final inspection and packaged for delivery to our customers.",
+  },
+  {
+    ordinal: "03",
+    title: "Regeneration",
+    body: "When a lubricant is deemed end of life, we have the expertise, plant and ability to regenerate the lubricant back to a new oil specification, just like a newly manufactured lubricant and extremely powerful tool in today's world.",
+  },
+  {
+    ordinal: "04",
+    title: "Disposal",
+    body: "At a lubricant's end of life when we cannot regenerate, we have all permits to allow for disposal. This provides our clients with a fully sustainable partner who can supply, re-generate or - worst case - dispose of.",
+  },
+];
+---
+
+<section class="lifecycle">
+  <div class="lifecycle__inner">
+    <p class="lifecycle__label">The Complete Lubricant Lifecycle</p>
+
+    <!-- Desktop: 4-column grid -->
+    <div class="lifecycle__grid">
+      {pillars.map((pillar) => (
+        <div class="lifecycle__pillar">
+          <span class="lifecycle__ordinal">{pillar.ordinal}</span>
+          <h3 class="lifecycle__heading">{pillar.title}</h3>
+          <div class="lifecycle__rule"></div>
+          <p class="lifecycle__body">{pillar.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Mobile: native accordion -->
+    <div class="lifecycle__accordion">
+      {pillars.map((pillar) => (
+        <details class="lifecycle__item">
+          <summary class="lifecycle__summary">
+            <span class="lifecycle__sum-ordinal">{pillar.ordinal}</span>
+            <span class="lifecycle__sum-title">{pillar.title}</span>
+            <svg class="lifecycle__chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <p class="lifecycle__detail">{pillar.body}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lifecycle {
+    background: var(--page-bg);
+    padding: var(--section-py) var(--section-px);
+  }
+
+  .lifecycle__inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  .lifecycle__label {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--nav-accent);
+    margin: 0 0 48px;
+  }
+
+  /* ── Desktop grid ── */
+  .lifecycle__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .lifecycle__pillar {
+    padding: 0 32px;
+    border-left: 1px solid var(--border-subtle);
+  }
+
+  .lifecycle__pillar:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .lifecycle__ordinal {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--nav-accent);
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+
+  .lifecycle__heading {
+    font-family: var(--font-heading);
+    font-size: clamp(20px, 2vw, 24px);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0 0 14px;
+  }
+
+  .lifecycle__rule {
+    width: 32px;
+    height: 2px;
+    background: var(--nav-accent);
+    margin-bottom: 18px;
+    opacity: 0.8;
+  }
+
+  .lifecycle__body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ── Mobile accordion ── */
+  .lifecycle__accordion {
+    display: none;
+  }
+
+  .lifecycle__item {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .lifecycle__item:last-child {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .lifecycle__summary {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .lifecycle__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lifecycle__sum-ordinal {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--nav-accent);
+    opacity: 0.8;
+    flex-shrink: 0;
+  }
+
+  .lifecycle__sum-title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .lifecycle__chevron {
+    width: 16px;
+    height: 16px;
+    color: var(--nav-accent);
+    flex-shrink: 0;
+    transition: transform 200ms ease;
+  }
+
+  details[open] .lifecycle__chevron {
+    transform: rotate(180deg);
+  }
+
+  .lifecycle__detail {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    margin: 0 0 20px;
+    padding-left: calc(11px + 14px + 0px); /* align with title */
+  }
+
+  @media (max-width: 768px) {
+    .lifecycle__grid {
+      display: none;
+    }
+
+    .lifecycle__accordion {
+      display: block;
+    }
+
+    .lifecycle__label {
+      margin-bottom: 32px;
+    }
+  }
+</style>

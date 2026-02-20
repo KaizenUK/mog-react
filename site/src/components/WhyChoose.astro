@@ -1,0 +1,161 @@
+---
+const items = [
+  {
+    label: "Cost-saving Solutions",
+    detail: "As oil and lubricant wholesalers, you can buy from us by the bulk to save big.",
+  },
+  {
+    label: "Industry Expertise",
+    detail: "Over 150 years' combined experience in lubricant formulation, manufacturing, and recycling.",
+  },
+  {
+    label: "High-Quality Products",
+    detail: "We offer over 5000 unique products across automotive, industrial, agricultural, and manufacturing sectors.",
+  },
+  {
+    label: "In-House Research & Development",
+    detail: "Expert product testing, analysis, and customisable formulations using in-house laboratories. Ensuring tailored solutions for evolving lubrication demands.",
+  },
+  {
+    label: "Friendly, Experienced Team",
+    detail: "Our team of local industry experts are here to help guide you in choosing the right oil for your needs, offering bespoke lubricant solutions.",
+  },
+  {
+    label: "Speedy, Nationwide Delivery",
+    detail: "We can ship and bulk supply oils, often the next day, across the whole of the UK.",
+  },
+];
+---
+
+<section class="why">
+  <div class="why__inner">
+    <header class="why__header">
+      <h2 class="why__heading">
+        Agricultural Lubricant Suppliers West Midlands: Why Choose Midland Oil Group?
+      </h2>
+      <p class="why__intro">
+        With a fully integrated approach to the lubricant lifecycle, from formulation and manufacturing to waste oil collection and regeneration, we offer an all-in-one solution, making us the nation's go-to lubricant suppliers. Choose Midland Oil Group and you'll be choosing:
+      </p>
+    </header>
+
+    <div class="why__checklist">
+      {items.map((item) => (
+        <div class="why__item">
+          <span class="why__icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 10.5L8 14.5L16 6" stroke="#c8a034" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div class="why__text">
+            <strong class="why__label">{item.label}</strong>
+            <span class="why__detail">: {item.detail}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="why__distributor">
+      We work closely with a large group of distributors, resellers even manufacturers where they require our own labelling/toll blending service. With our in house graphic design, printing facility we can offer multiple batch runs or the client specific one offs in their own branded goods. We stock a large variety of packaging to suit the clients demands, along with varies label offerings this customisable service is a growing part of our organisation and one we are always looking to support our clients alongside.
+    </p>
+  </div>
+</section>
+
+<style>
+  .why {
+    background: var(--page-bg);
+    padding: var(--section-py) var(--section-px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .why__inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  .why__header {
+    max-width: 820px;
+    margin-bottom: 48px;
+  }
+
+  .why__heading {
+    font-family: var(--font-heading);
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0 0 20px;
+    line-height: 1.15;
+  }
+
+  .why__intro {
+    font-family: var(--font-body);
+    font-size: clamp(15px, 1.5vw, 17px);
+    line-height: 1.75;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .why__checklist {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 48px;
+    margin-bottom: 48px;
+  }
+
+  .why__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .why__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+  }
+
+  .why__icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .why__text {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .why__label {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+  }
+
+  .why__detail {
+    /* inherits font-body from parent */
+  }
+
+  .why__distributor {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.4vw, 16px);
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 860px;
+    margin: 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 700px) {
+    .why__checklist {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+</style>

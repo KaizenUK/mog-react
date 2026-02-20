@@ -1,11 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
+import LifecyclePillars from "../components/LifecyclePillars.astro";
+import AuthorityIntro from "../components/AuthorityIntro.astro";
+import BrandGrid from "../components/BrandGrid.astro";
+import Capabilities from "../components/Capabilities.astro";
+import SectorCards from "../components/SectorCards.astro";
+import ProofStats from "../components/ProofStats.astro";
+import WhyChoose from "../components/WhyChoose.astro";
+import FinalCta from "../components/FinalCta.astro";
 import { getSitePageBySlug } from "../lib/sanity/sitePages";
+import { getNavigationData } from "../lib/sanity/navigation";
 
-const homePage = await getSitePageBySlug("home");
+const [homePage, navData] = await Promise.all([
+  getSitePageBySlug("home"),
+  getNavigationData(),
+]);
 ---
 
 <Layout title="Midland Oil Group — UK Lubricant Manufacturer & Supplier">
   <Hero hero={homePage?.hero} slot="above-main" />
+  <LifecyclePillars slot="above-main" />
+  <AuthorityIntro slot="above-main" />
+  <BrandGrid slot="above-main" />
+  <Capabilities slot="above-main" />
+  <SectorCards slot="above-main" sectors={navData.sectors} />
+  <ProofStats slot="above-main" />
+  <WhyChoose slot="above-main" />
+  <FinalCta slot="above-main" />
 </Layout>
