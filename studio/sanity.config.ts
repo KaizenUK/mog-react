@@ -21,8 +21,12 @@ export default defineConfig({
     visionTool(),
      assist(),
     presentationTool({
-      previewUrl: {initial: 'http://localhost:4321'},
-      allowOrigins: ['http://localhost:*'],
+      previewUrl: {
+        initial: 'http://localhost:4321',
+        draftMode: {
+          enable: 'http://localhost:4321/api/draft-mode?action=enable',
+        },
+      },
       resolve: {locations, mainDocuments},
     }),
   ],

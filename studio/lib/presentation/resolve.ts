@@ -1,23 +1,38 @@
 import {defineDocuments, defineLocations} from 'sanity/presentation'
 
 export const locations = {
+  // ── sitePage: homepage + any CMS-managed flat pages ───────────────────────
+  sitePage: defineLocations({
+    select: {title: 'title', slug: 'slug.current'},
+    resolve: (doc) => {
+      const slug = doc?.slug
+      const href = slug === 'home' ? '/' : `/${slug}`
+      return {
+        locations: [{title: doc?.title || 'Page', href}],
+      }
+    },
+  }),
+
+  // ── Products ──────────────────────────────────────────────────────────────
   product: defineLocations({
     select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
       locations: [
-        {title: doc?.title || 'Product', href: `/product/${doc?.slug}`},
-        {title: 'All products', href: '/products'},
+        {title: doc?.title || 'Product', href: `/products/${doc?.slug}`},
+        {title: 'All Products', href: '/products'},
       ],
     }),
   }),
 
+  // ── Sectors ───────────────────────────────────────────────────────────────
   sector: defineLocations({
     select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
-      locations: [{title: doc?.title || 'Sector', href: `/sector/${doc?.slug}`}],
+      locations: [{title: doc?.title || 'Sector', href: `/sectors/${doc?.slug}`}],
     }),
   }),
 
+  // ── Services ──────────────────────────────────────────────────────────────
   service: defineLocations({
     select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
@@ -25,6 +40,7 @@ export const locations = {
     }),
   }),
 
+  // ── Blog / News ───────────────────────────────────────────────────────────
   post: defineLocations({
     select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
@@ -34,18 +50,32 @@ export const locations = {
 }
 
 export const mainDocuments = defineDocuments([
+  // Homepage — sitePage with slug "home" maps to "/"
   {
-    route: '/product/:slug',
+    route: '/',
+    filter: `_type == "sitePage" && slug.current == "home"`,
+  },
+  // Other flat site pages
+  {
+    route: '/:slug',
+    filter: `_type == "sitePage" && slug.current == $slug`,
+  },
+  // Products
+  {
+    route: '/products/:slug',
     filter: `_type == "product" && slug.current == $slug`,
   },
+  // Sectors
   {
-    route: '/sector/:slug',
+    route: '/sectors/:slug',
     filter: `_type == "sector" && slug.current == $slug`,
   },
+  // Services
   {
     route: '/services/:slug',
     filter: `_type == "service" && slug.current == $slug`,
   },
+  // Blog
   {
     route: '/blog/:slug',
     filter: `_type == "post" && slug.current == $slug`,

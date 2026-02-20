@@ -9,16 +9,43 @@ const apiVersion =
   process.env.PUBLIC_SANITY_API_VERSION ??
   '2025-02-01'
 
-// Helpful debug (remove once working)
-console.log('[sanity] env', {projectId, dataset, apiVersion})
-
 if (!projectId) throw new Error('Missing SANITY projectId (PUBLIC_SANITY_PROJECT_ID)')
 if (!dataset) throw new Error('Missing SANITY dataset (PUBLIC_SANITY_DATASET)')
 
+const isDev = import.meta.env.DEV
+
+/** Standard client — CDN-backed, published perspective */
 export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: !isDev,
   perspective: 'published',
 })
+
+/**
+ * Stega client — used in draft/preview mode.
+ * Strings include invisible stega markers so the visual editing
+ * overlay knows which Studio document/field each value belongs to.
+ */
+export const stegaClient = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false,
+  perspective: 'previewDrafts',
+  stega: {
+    enabled: true,
+    studioUrl: '/studio',
+  },
+})
+
+/**
+ * Returns the appropriate client for the current request.
+ * Pass `draftMode = true` (read from the draft-mode cookie)
+ * to get the stega/previewDrafts client; otherwise returns
+ * the standard published client.
+ */
+export function getClient(draftMode = false) {
+  return draftMode ? stegaClient : sanityClient
+}

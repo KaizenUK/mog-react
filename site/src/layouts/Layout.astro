@@ -1,5 +1,4 @@
 ---
-import { getSiteSettings } from "../lib/sanity/settings.ts";
 import { getNavigationData } from "../lib/sanity/navigation.ts";
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
@@ -19,6 +18,10 @@ const {
 } = Astro.props
 
 const navData = await getNavigationData();
+
+// Draft mode is enabled when the cookie is present (set by /api/draft-mode)
+const isDraftMode = Astro.cookies.get('sanity-draft-mode')?.value === '1'
+const enableVisualEditing = import.meta.env.DEV || isDraftMode
 ---
 
 <!doctype html>
@@ -56,5 +59,13 @@ const navData = await getNavigationData();
         <div>&copy; {new Date().getFullYear()} Midland Oil Group</div>
       </div>
     </footer>
+
+    <!-- Sanity visual editing overlays: active in dev and when draft-mode cookie is set -->
+    {enableVisualEditing && (
+      <script>
+        import { enableVisualEditing } from '@sanity/visual-editing'
+        enableVisualEditing()
+      </script>
+    )}
   </body>
 </html>

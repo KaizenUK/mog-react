@@ -1,5 +1,6 @@
 // site/src/lib/sanity/sitePages.ts
 import { sanityClient } from "./client";
+import type { SanityClient } from "@sanity/client";
 import { urlForImage } from "./image";
 
 export type SitePageSection =
@@ -52,7 +53,10 @@ export type SitePageDoc = {
   seo?: unknown;
 };
 
-export async function getSitePageBySlug(slug: string): Promise<SitePageDoc | null> {
+export async function getSitePageBySlug(
+  slug: string,
+  client: SanityClient = sanityClient,
+): Promise<SitePageDoc | null> {
   const query = /* groq */ `
     *[_type == "sitePage" && slug.current == $slug][0]{
       title,
@@ -83,7 +87,7 @@ export async function getSitePageBySlug(slug: string): Promise<SitePageDoc | nul
     }
   `;
 
-  const result = await sanityClient.fetch(query, { slug });
+  const result = await client.fetch(query, { slug });
   if (!result) return null;
 
   // Resolve Sanity image to URL
