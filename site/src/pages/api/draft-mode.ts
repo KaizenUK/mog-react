@@ -16,17 +16,22 @@ export const prerender = false
 import type { APIRoute } from 'astro'
 
 const COOKIE_NAME = 'sanity-draft-mode'
+const PREVIEW_SECRET_PARAM = 'sanity-preview-secret'
+const PREVIEW_PATHNAME_PARAM = 'sanity-preview-pathname'
 
 export const GET: APIRoute = async ({ cookies, url, redirect }) => {
   const action = url.searchParams.get('action')
-  const redirectTo = url.searchParams.get('redirect') ?? '/'
+  const previewPathname = url.searchParams.get(PREVIEW_PATHNAME_PARAM)
+  const redirectTo = previewPathname ?? url.searchParams.get('redirect') ?? '/'
+  const hasPreviewSecret = url.searchParams.has(PREVIEW_SECRET_PARAM)
+  const isHttps = url.protocol === 'https:'
 
-  if (action === 'enable') {
+  if (action === 'enable' || hasPreviewSecret) {
     cookies.set(COOKIE_NAME, '1', {
       path: '/',
       httpOnly: true,
-      sameSite: 'none',
-      secure: true,
+      sameSite: isHttps ? 'none' : 'lax',
+      secure: isHttps,
       maxAge: 60 * 60, // 1 hour
     })
     return redirect(redirectTo, 307)

@@ -6,8 +6,6 @@ import {schemaTypes} from './schemaTypes'
 import {locations, mainDocuments} from './lib/presentation/resolve'
 import { assist } from '@sanity/assist'
 
-console.log(process.env.SANITY_STUDIO_PROJECT_ID)
-
 export default defineConfig({
   name: 'default',
   title: 'MOG',
@@ -24,7 +22,7 @@ export default defineConfig({
       previewUrl: {
         initial: 'http://localhost:4321',
         draftMode: {
-          enable: 'http://localhost:4321/api/draft-mode?action=enable',
+          enable: 'http://localhost:4321/api/draft-mode',
         },
       },
       resolve: {locations, mainDocuments},

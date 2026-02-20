@@ -20,7 +20,13 @@ export const sanityClient = createClient({
   dataset,
   apiVersion,
   useCdn: !isDev,
-  perspective: 'published',
+  perspective: isDev ? 'previewDrafts' : 'published',
+  stega: isDev
+    ? {
+        enabled: true,
+        studioUrl: '/studio',
+      }
+    : undefined,
 })
 
 /**

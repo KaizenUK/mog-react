@@ -18,7 +18,7 @@ export const locations = {
     select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
       locations: [
-        {title: doc?.title || 'Product', href: `/products/${doc?.slug}`},
+        {title: doc?.title || 'Product', href: `/product/${doc?.slug}`},
         {title: 'All Products', href: '/products'},
       ],
     }),
@@ -44,7 +44,7 @@ export const locations = {
   post: defineLocations({
     select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
-      locations: [{title: doc?.title || 'Post', href: `/blog/${doc?.slug}`}],
+      locations: [{title: doc?.title || 'Post', href: `/news/${doc?.slug}`}],
     }),
   }),
 }
@@ -55,12 +55,26 @@ export const mainDocuments = defineDocuments([
     route: '/',
     filter: `_type == "sitePage" && slug.current == "home"`,
   },
+  {
+    route: '/home',
+    filter: `_type == "sitePage" && slug.current == "home"`,
+  },
   // Other flat site pages
   {
     route: '/:slug',
     filter: `_type == "sitePage" && slug.current == $slug`,
   },
+  // Nested site pages (e.g. company/about-us, services/oil-regeneration)
+  {
+    route: '/:parent/:slug',
+    filter: `_type == "sitePage" && slug.current == $parent + "/" + $slug`,
+  },
   // Products
+  {
+    route: '/product/:slug',
+    filter: `_type == "product" && slug.current == $slug`,
+  },
+  // Legacy product URL (redirects to /product/:slug in Astro)
   {
     route: '/products/:slug',
     filter: `_type == "product" && slug.current == $slug`,
@@ -75,7 +89,11 @@ export const mainDocuments = defineDocuments([
     route: '/services/:slug',
     filter: `_type == "service" && slug.current == $slug`,
   },
-  // Blog
+  // News / Blog
+  {
+    route: '/news/:slug',
+    filter: `_type == "post" && slug.current == $slug`,
+  },
   {
     route: '/blog/:slug',
     filter: `_type == "post" && slug.current == $slug`,

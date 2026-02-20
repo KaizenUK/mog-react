@@ -26,6 +26,25 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '^/studio(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+        '^/static(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+        '^/vendor(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+      },
+    },
     optimizeDeps: {
       // react-compiler-runtime is CJS-only; Vite must pre-bundle it as ESM
       // so @sanity/astro's visual editing component can import { c } from it.
