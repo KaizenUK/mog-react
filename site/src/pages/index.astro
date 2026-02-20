@@ -26,12 +26,12 @@ const [homePage, navData] = await Promise.all([
 
 <Layout title="Midland Oil Group — UK Lubricant Manufacturer & Supplier">
   <Hero hero={homePage?.hero} slot="above-main" />
-  <LifecyclePillars slot="above-main" />
-  <AuthorityIntro slot="above-main" />
+  <LifecyclePillars data={homePage?.lifecycleSection} slot="above-main" />
+  <AuthorityIntro data={homePage?.authorityIntro} slot="above-main" />
   <BrandGrid slot="above-main" />
-  <Capabilities slot="above-main" />
+  <Capabilities data={homePage?.capabilitiesSection} slot="above-main" />
   <SectorCards slot="above-main" sectors={navData.sectors} />
-  <ProofStats slot="above-main" />
-  <WhyChoose slot="above-main" />
-  <FinalCta slot="above-main" />
+  <ProofStats data={homePage?.statsSection} slot="above-main" />
+  <WhyChoose data={homePage?.whyChooseSection} slot="above-main" />
+  <FinalCta data={homePage?.finalCtaSection} slot="above-main" />
 </Layout>

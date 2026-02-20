@@ -1,24 +1,21 @@
 ---
-const stats = [
-  {
-    figure: "5,000+",
-    countTo: 5000,
-    label: "Products",
-    sentence: "Across our brand portfolio, with bespoke formulation available for specific client needs via our in-house laboratory team.",
-  },
-  {
-    figure: "40+",
-    countTo: 40,
-    label: "Years' Experience",
-    sentence: "In specialist small-pack filling — from NHS syringes and pharmaceutical lines to automotive and industrial packs.",
-  },
-  {
-    figure: "250+",
-    countTo: 250,
-    label: "Industrial Products",
-    sentence: "Covering cutting fluids, metalworking lubricants, and engineering oils for the manufacturing and engineering sectors.",
-  },
-];
+import type { StatsSectionData } from "../lib/sanity/sitePages";
+
+type Props = { data?: StatsSectionData }
+const { data } = Astro.props
+
+const defaultStats = [
+  { figure: "5,000+", countTo: 5000, label: "Products",           sentence: "Across our brand portfolio, with bespoke formulation available for specific client needs via our in-house laboratory team." },
+  { figure: "40+",    countTo: 40,   label: "Years' Experience",  sentence: "In specialist small-pack filling — from NHS syringes and pharmaceutical lines to automotive and industrial packs." },
+  { figure: "250+",   countTo: 250,  label: "Industrial Products", sentence: "Covering cutting fluids, metalworking lubricants, and engineering oils for the manufacturing and engineering sectors." },
+]
+
+const stats = defaultStats.map((def, i) => ({
+  figure:   data?.items?.[i]?.figure   ?? def.figure,
+  countTo:  data?.items?.[i]?.countTo  ?? def.countTo,
+  label:    data?.items?.[i]?.label    ?? def.label,
+  sentence: data?.items?.[i]?.sentence ?? def.sentence,
+}))
 ---
 
 <section class="proof">

@@ -45,11 +45,79 @@ export type SitePageHero = {
   badges?: string[];
 };
 
+export type AuthorityIntroData = {
+  eyebrow?: string;
+  heading?: string;
+  paragraphOne?: string;
+  paragraphTwo?: string;
+};
+
+export type CapabilityTile = {
+  title?: string;
+  description?: string;
+};
+
+export type CapabilitiesData = {
+  lead?: string;
+  tiles?: CapabilityTile[];
+  callout?: string;
+};
+
+export type StatItem = {
+  figure?: string;
+  countTo?: number;
+  label?: string;
+  sentence?: string;
+};
+
+export type StatsSectionData = {
+  items?: StatItem[];
+};
+
+export type WhyChooseItem = {
+  label?: string;
+  detail?: string;
+};
+
+export type WhyChooseData = {
+  heading?: string;
+  intro?: string;
+  items?: WhyChooseItem[];
+  calloutBody?: string;
+};
+
+export type FinalCtaData = {
+  heading?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  ghostLabel?: string;
+  ghostHref?: string;
+};
+
+export type LifecyclePillar = {
+  ordinal?: string;
+  title?: string;
+  body?: string;
+};
+
+export type LifecycleSectionData = {
+  sectionLabel?: string;
+  pillars?: LifecyclePillar[];
+};
+
 export type SitePageDoc = {
   title: string;
   slug: string;
   hero?: SitePageHero;
   sections?: SitePageSection[];
+  authorityIntro?: AuthorityIntroData;
+  capabilitiesSection?: CapabilitiesData;
+  statsSection?: StatsSectionData;
+  whyChooseSection?: WhyChooseData;
+  finalCtaSection?: FinalCtaData;
+  lifecycleSection?: LifecycleSectionData;
   seo?: unknown;
 };
 
@@ -82,6 +150,39 @@ export async function getSitePageBySlug(
         text,
         buttonLabel,
         buttonHref
+      },
+      authorityIntro{
+        eyebrow,
+        heading,
+        paragraphOne,
+        paragraphTwo
+      },
+      capabilitiesSection{
+        lead,
+        tiles[]{ title, description },
+        callout
+      },
+      statsSection{
+        items[]{ figure, countTo, label, sentence }
+      },
+      whyChooseSection{
+        heading,
+        intro,
+        items[]{ label, detail },
+        calloutBody
+      },
+      finalCtaSection{
+        heading,
+        primaryLabel,
+        primaryHref,
+        secondaryLabel,
+        secondaryHref,
+        ghostLabel,
+        ghostHref
+      },
+      lifecycleSection{
+        sectionLabel,
+        pillars[]{ ordinal, title, body }
       },
       seo
     }

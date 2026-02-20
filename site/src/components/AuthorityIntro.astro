@@ -1,26 +1,29 @@
 ---
+import type { AuthorityIntroData } from "../lib/sanity/sitePages";
+
+type Props = { data?: AuthorityIntroData }
+const { data } = Astro.props
+
+const eyebrow     = data?.eyebrow     ?? "About Midland Oil Group"
+const heading     = data?.heading     ?? "Lubricant Suppliers & Manufacturers\nWest Midlands, UK"
+const paragraphOne = data?.paragraphOne ?? "When you need reliable, high-performing oils and lubricants, Midland Oil Group is one of the UK's leading lubricant suppliers — manufacturing everything from engine oils and industrial oils to agricultural oils and metalworking fluids."
+const paragraphTwo = data?.paragraphTwo ?? "As an independently owned UK manufacturer based in the West Midlands, we combine over 150 years of industry experience with an in-house laboratory, blending facility, and nationwide distribution network."
 ---
 
 <section class="authority">
   <div class="authority__inner">
 
-    <p class="authority__eyebrow">About Midland Oil Group</p>
+    <p class="authority__eyebrow">{eyebrow}</p>
 
     <div class="authority__layout">
       <div class="authority__left">
-        <h2 class="authority__heading">
-          Lubricant Suppliers &amp; Manufacturers<br/>West Midlands, UK
-        </h2>
+        <h2 class="authority__heading" set:html={heading.replace(/\n/g, '<br/>')} />
         <div class="authority__rule" aria-hidden="true"></div>
       </div>
 
       <div class="authority__right">
-        <p class="authority__body">
-          When you need reliable, high-performing oils and lubricants, Midland Oil Group is one of the UK's leading lubricant suppliers — manufacturing everything from engine oils and industrial oils to agricultural oils and metalworking fluids.
-        </p>
-        <p class="authority__body authority__body--secondary">
-          As an independently owned UK manufacturer based in the West Midlands, we combine over 150 years of industry experience with an in-house laboratory, blending facility, and nationwide distribution network.
-        </p>
+        <p class="authority__body">{paragraphOne}</p>
+        <p class="authority__body authority__body--secondary">{paragraphTwo}</p>
       </div>
     </div>
 

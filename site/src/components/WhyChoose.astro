@@ -1,42 +1,34 @@
 ---
-const items = [
-  {
-    label: "Cost-Saving Solutions",
-    detail: "Buy in bulk from our wholesale operation to reduce your unit costs significantly.",
-  },
-  {
-    label: "Industry Expertise",
-    detail: "Over 150 years' combined experience in lubricant formulation, manufacturing, and recycling.",
-  },
-  {
-    label: "5,000+ Products",
-    detail: "Across automotive, industrial, agricultural, and manufacturing sectors — something for every application.",
-  },
-  {
-    label: "In-House R&D",
-    detail: "Expert testing, analysis, and customisable formulations from our on-site laboratory team.",
-  },
-  {
-    label: "Experienced Team",
-    detail: "Local industry experts guide you to the right lubricant, with bespoke solutions on offer.",
-  },
-  {
-    label: "Nationwide Delivery",
-    detail: "We ship and bulk-supply oils across the whole of the UK, often next day.",
-  },
-];
+import type { WhyChooseData } from "../lib/sanity/sitePages";
+
+type Props = { data?: WhyChooseData }
+const { data } = Astro.props
+
+const defaultItems = [
+  { label: "Cost-Saving Solutions", detail: "Buy in bulk from our wholesale operation to reduce your unit costs significantly." },
+  { label: "Industry Expertise",    detail: "Over 150 years' combined experience in lubricant formulation, manufacturing, and recycling." },
+  { label: "5,000+ Products",       detail: "Across automotive, industrial, agricultural, and manufacturing sectors — something for every application." },
+  { label: "In-House R&D",          detail: "Expert testing, analysis, and customisable formulations from our on-site laboratory team." },
+  { label: "Experienced Team",      detail: "Local industry experts guide you to the right lubricant, with bespoke solutions on offer." },
+  { label: "Nationwide Delivery",   detail: "We ship and bulk-supply oils across the whole of the UK, often next day." },
+]
+
+const heading     = data?.heading     ?? "Why Choose Midland Oil Group?"
+const intro       = data?.intro       ?? "With a fully integrated approach to the lubricant lifecycle — from formulation and manufacturing to waste oil collection and regeneration — we offer an all-in-one solution as the UK's go-to lubricant supplier."
+const calloutBody = data?.calloutBody ?? "We work closely with distributors, resellers, and manufacturers requiring own-label products. With in-house graphic design and a dedicated printing facility, we deliver bespoke, custom-branded packaging — from single-run client-specific orders to large multi-batch programmes."
+
+const items = defaultItems.map((def, i) => ({
+  label:  data?.items?.[i]?.label  ?? def.label,
+  detail: data?.items?.[i]?.detail ?? def.detail,
+}))
 ---
 
 <section class="why">
   <div class="why__inner">
     <header class="why__header">
       <p class="why__eyebrow">Why Choose Us</p>
-      <h2 class="why__heading">
-        Why Choose Midland Oil Group?
-      </h2>
-      <p class="why__intro">
-        With a fully integrated approach to the lubricant lifecycle — from formulation and manufacturing to waste oil collection and regeneration — we offer an all-in-one solution as the UK's go-to lubricant supplier.
-      </p>
+      <h2 class="why__heading">{heading}</h2>
+      <p class="why__intro">{intro}</p>
     </header>
 
     <div class="why__checklist">
@@ -59,9 +51,7 @@ const items = [
     <!-- Toll blending callout -->
     <div class="why__feature">
       <div class="why__feature-tag">Own-Label &amp; Toll Blending</div>
-      <p class="why__feature-body">
-        We work closely with distributors, resellers, and manufacturers requiring own-label products. With in-house graphic design and a dedicated printing facility, we deliver bespoke, custom-branded packaging — from single-run client-specific orders to large multi-batch programmes.
-      </p>
+      <p class="why__feature-body">{calloutBody}</p>
     </div>
 
   </div>

@@ -1,15 +1,25 @@
 ---
+import type { FinalCtaData } from "../lib/sanity/sitePages";
+
+type Props = { data?: FinalCtaData }
+const { data } = Astro.props
+
+const heading        = data?.heading        ?? "Lubricant Manufacturers & Wholesalers West Midlands"
+const primaryLabel   = data?.primaryLabel   ?? "Find the Right Oil"
+const primaryHref    = data?.primaryHref    ?? "/products"
+const secondaryLabel = data?.secondaryLabel ?? "Our Products"
+const secondaryHref  = data?.secondaryHref  ?? "/products"
+const ghostLabel     = data?.ghostLabel     ?? "Contact Us"
+const ghostHref      = data?.ghostHref      ?? "/contact"
 ---
 
 <section class="final-cta">
   <div class="final-cta__inner">
-    <h2 class="final-cta__heading">
-      Lubricant Manufacturers &amp; Wholesalers West Midlands
-    </h2>
+    <h2 class="final-cta__heading">{heading}</h2>
     <div class="final-cta__buttons">
-      <a class="final-cta__btn final-cta__btn--primary" href="/products">Find the Right Oil</a>
-      <a class="final-cta__btn final-cta__btn--secondary" href="/products">Our Products</a>
-      <a class="final-cta__btn final-cta__btn--ghost" href="/contact">Contact Us</a>
+      <a class="final-cta__btn final-cta__btn--primary" href={primaryHref}>{primaryLabel}</a>
+      <a class="final-cta__btn final-cta__btn--secondary" href={secondaryHref}>{secondaryLabel}</a>
+      <a class="final-cta__btn final-cta__btn--ghost" href={ghostHref}>{ghostLabel}</a>
     </div>
   </div>
 </section>

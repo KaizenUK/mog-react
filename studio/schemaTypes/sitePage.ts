@@ -164,6 +164,136 @@ export const sitePage = defineType({
       ],
     }),
 
+    // ── About / Authority Intro section ─────────────────────────────────────
+    defineField({
+      name: "authorityIntro",
+      title: "About section",
+      type: "object",
+      fields: [
+        defineField({ name: "eyebrow", title: "Eyebrow label", type: "string" }),
+        defineField({ name: "heading", title: "Heading", type: "string" }),
+        defineField({ name: "paragraphOne", title: "First paragraph", type: "text", rows: 4 }),
+        defineField({ name: "paragraphTwo", title: "Second paragraph", type: "text", rows: 4 }),
+      ],
+    }),
+
+    // ── Capabilities section ─────────────────────────────────────────────────
+    defineField({
+      name: "capabilitiesSection",
+      title: "Capabilities section",
+      type: "object",
+      fields: [
+        defineField({ name: "lead", title: "Lead paragraph", type: "text", rows: 3 }),
+        defineField({
+          name: "tiles",
+          title: "Service tiles",
+          type: "array",
+          of: [{
+            type: "object",
+            name: "tile",
+            fields: [
+              defineField({ name: "title", title: "Title", type: "string" }),
+              defineField({ name: "description", title: "Description", type: "string" }),
+            ],
+            preview: { select: { title: "title", subtitle: "description" } },
+          }],
+        }),
+        defineField({ name: "callout", title: "Callout paragraph", type: "text", rows: 4 }),
+      ],
+    }),
+
+    // ── Stats section ("By The Numbers") ────────────────────────────────────
+    defineField({
+      name: "statsSection",
+      title: "Stats section (By The Numbers)",
+      type: "object",
+      fields: [
+        defineField({
+          name: "items",
+          title: "Stats",
+          type: "array",
+          of: [{
+            type: "object",
+            name: "stat",
+            fields: [
+              defineField({ name: "figure", title: "Display figure", type: "string", description: "e.g. 5,000+" }),
+              defineField({ name: "countTo", title: "Count-up target", type: "number", description: "The raw number for the animation, e.g. 5000" }),
+              defineField({ name: "label", title: "Metric label", type: "string", description: "e.g. Products" }),
+              defineField({ name: "sentence", title: "Description", type: "text", rows: 2 }),
+            ],
+            preview: { select: { title: "figure", subtitle: "label" } },
+          }],
+        }),
+      ],
+    }),
+
+    // ── Why Choose section ───────────────────────────────────────────────────
+    defineField({
+      name: "whyChooseSection",
+      title: "Why Choose section",
+      type: "object",
+      fields: [
+        defineField({ name: "heading", title: "Heading", type: "string" }),
+        defineField({ name: "intro", title: "Intro paragraph", type: "text", rows: 3 }),
+        defineField({
+          name: "items",
+          title: "Checklist items",
+          type: "array",
+          of: [{
+            type: "object",
+            name: "item",
+            fields: [
+              defineField({ name: "label", title: "Label", type: "string" }),
+              defineField({ name: "detail", title: "Detail", type: "string" }),
+            ],
+            preview: { select: { title: "label", subtitle: "detail" } },
+          }],
+        }),
+        defineField({ name: "calloutBody", title: "Callout paragraph (toll blending)", type: "text", rows: 3 }),
+      ],
+    }),
+
+    // ── Final CTA section ────────────────────────────────────────────────────
+    defineField({
+      name: "finalCtaSection",
+      title: "Final CTA section",
+      type: "object",
+      fields: [
+        defineField({ name: "heading", title: "Heading", type: "string" }),
+        defineField({ name: "primaryLabel", title: "Primary button label", type: "string" }),
+        defineField({ name: "primaryHref", title: "Primary button link", type: "string" }),
+        defineField({ name: "secondaryLabel", title: "Secondary button label", type: "string" }),
+        defineField({ name: "secondaryHref", title: "Secondary button link", type: "string" }),
+        defineField({ name: "ghostLabel", title: "Ghost button label", type: "string" }),
+        defineField({ name: "ghostHref", title: "Ghost button link", type: "string" }),
+      ],
+    }),
+
+    // ── Lifecycle Pillars section ────────────────────────────────────────────
+    defineField({
+      name: "lifecycleSection",
+      title: "Lifecycle section",
+      type: "object",
+      fields: [
+        defineField({ name: "sectionLabel", title: "Section label", type: "string" }),
+        defineField({
+          name: "pillars",
+          title: "Lifecycle pillars",
+          type: "array",
+          of: [{
+            type: "object",
+            name: "pillar",
+            fields: [
+              defineField({ name: "ordinal", title: "Ordinal", type: "string", description: "e.g. 01" }),
+              defineField({ name: "title", title: "Title", type: "string" }),
+              defineField({ name: "body", title: "Body text", type: "text", rows: 4 }),
+            ],
+            preview: { select: { title: "title", subtitle: "ordinal" } },
+          }],
+        }),
+      ],
+    }),
+
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
   preview: {
