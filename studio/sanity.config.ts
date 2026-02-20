@@ -21,8 +21,9 @@ export default defineConfig({
     presentationTool({
       previewUrl: {
         initial: 'http://localhost:4321',
-        draftMode: {
+        previewMode: {
           enable: 'http://localhost:4321/api/draft-mode',
+          disable: 'http://localhost:4321/api/draft-mode?action=disable',
         },
       },
       resolve: {locations, mainDocuments},

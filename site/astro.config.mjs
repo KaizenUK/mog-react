@@ -70,10 +70,5 @@ export default defineConfig({
         },
       },
     },
-    optimizeDeps: {
-      // react-compiler-runtime is CJS-only; Vite must pre-bundle it as ESM
-      // so @sanity/astro's visual editing component can import { c } from it.
-      include: ['react-compiler-runtime'],
-    },
   },
 })

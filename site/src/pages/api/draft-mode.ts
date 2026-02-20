@@ -42,6 +42,12 @@ export const GET: APIRoute = async ({ cookies, url, redirect }) => {
     return redirect(redirectTo, 307)
   }
 
+  // If this endpoint is loaded directly in the preview iframe (without params),
+  // bounce back to the homepage so Presentation doesn't get stuck on JSON.
+  if (!action && !hasPreviewSecret) {
+    return redirect('/', 307)
+  }
+
   return new Response(
     JSON.stringify({ draftMode: cookies.get(COOKIE_NAME)?.value === '1' }),
     { status: 200, headers: { 'Content-Type': 'application/json' } }

@@ -50,12 +50,6 @@ export const locations = {
 }
 
 export const mainDocuments = defineDocuments([
-  // Draft mode endpoint can briefly appear as the preview URL before redirect.
-  // Map it to homepage so Presentation doesn't show "missing main document."
-  {
-    route: '/api/draft-mode',
-    filter: `_type == "sitePage" && slug.current == "home"`,
-  },
   // Homepage — sitePage with slug "home" maps to "/"
   {
     route: '/',
