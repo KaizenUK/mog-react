@@ -19,9 +19,6 @@ const {
 
 const navData = await getNavigationData();
 
-// Draft mode is enabled when the cookie is present (set by /api/draft-mode)
-const isDraftMode = Astro.cookies.get('sanity-draft-mode')?.value === '1'
-const enableVisualEditing = import.meta.env.DEV || isDraftMode
 ---
 
 <!doctype html>
@@ -60,12 +57,10 @@ const enableVisualEditing = import.meta.env.DEV || isDraftMode
       </div>
     </footer>
 
-    <!-- Sanity visual editing overlays: active in dev and when draft-mode cookie is set -->
-    {enableVisualEditing && (
-      <script>
-        import { enableVisualEditing } from '@sanity/visual-editing'
-        enableVisualEditing()
-      </script>
-    )}
+    <!-- Sanity visual editing overlays (no-op when Presentation is not connected) -->
+    <script>
+      import { enableVisualEditing } from '@sanity/visual-editing'
+      enableVisualEditing()
+    </script>
   </body>
 </html>
