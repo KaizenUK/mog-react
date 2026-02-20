@@ -43,6 +43,31 @@ export default defineConfig({
           changeOrigin: true,
           ws: true,
         },
+        '^/\\.sanity(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+        '^/sanity\\.config\\.(?:ts|js)$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+        '^/node_modules/\\.sanity(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+        '^/schemaTypes(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
+        '^/lib/presentation(?:/.*)?$': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          ws: true,
+        },
       },
     },
     optimizeDeps: {

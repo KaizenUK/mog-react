@@ -1,6 +1,7 @@
 ---
 import { getNavigationData } from "../lib/sanity/navigation.ts";
 import Navigation from "../components/Navigation.astro";
+import { VisualEditing } from "@sanity/astro/visual-editing";
 import "../styles/global.css";
 
 type Props = {
@@ -18,6 +19,11 @@ const {
 } = Astro.props
 
 const navData = await getNavigationData();
+const isDraftMode = Astro.cookies.get('sanity-draft-mode')?.value === '1'
+const visualEditingEnabled =
+  import.meta.env.DEV ||
+  isDraftMode ||
+  import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
 
 ---
 
@@ -57,10 +63,6 @@ const navData = await getNavigationData();
       </div>
     </footer>
 
-    <!-- Sanity visual editing overlays (no-op when Presentation is not connected) -->
-    <script>
-      import { enableVisualEditing } from '@sanity/visual-editing'
-      enableVisualEditing()
-    </script>
+    <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
   </body>
 </html>
