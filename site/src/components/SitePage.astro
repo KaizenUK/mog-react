@@ -12,110 +12,159 @@
 
 import Layout from "../layouts/Layout.astro";
 import { getSitePageBySlug } from "../lib/sanity/sitePages";
+import { getSiteSettings } from "../lib/sanity/settings";
+import { mergeSeo } from "../lib/sanity/seo";
 import { portableTextToHtml } from "../lib/portableTextToHtml";
+
+type MaybeSeo = {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+};
 
 const { slug } = Astro.props;
 
-const page = await getSitePageBySlug(slug);
+const [settings, pageResult] = await Promise.all([
+  getSiteSettings(),
+  getSitePageBySlug(slug),
+]);
 
-if (!page) {
-  return Astro.redirect("/", 302);
+if (!pageResult) {
+  return new Response("Not found", { status: 404 });
 }
 
-function safeText(v) {
-  if (!v) return "";
+// Narrow to a non-null variable so TS stops screaming.
+const page = pageResult;
+
+// Page SEO is currently typed loosely in your project, so treat it safely.
+const pageSeo = (page.seo ?? {}) as MaybeSeo;
+
+const seo = mergeSeo(settings, {
+  ...(pageSeo ?? {}),
+  title: pageSeo.title ?? page.title,
+  // NOTE: do NOT add canonicalPath here unless your Seo type supports it.
+  // If you want canonicals, add them in mergeSeo implementation or Seo type.
+});
+
+function safeText(v: unknown): string {
+  if (v === null || v === undefined) return "";
   return String(v);
 }
 ---
 
-<Layout title={page.title}>
+<!-- Layout currently does NOT accept `seo` prop, so keep this compatible -->
+<Layout title={seo.title ?? page.title}>
   <main class="mx-auto max-w-4xl px-4 py-10">
     <header class="mb-10">
       <h1 class="text-3xl font-semibold">
         {page.hero?.headline ?? page.title}
       </h1>
 
-      {page.hero?.intro ? (
-        <p class="mt-3 text-base opacity-80">{page.hero.intro}</p>
-      ) : null}
+      {
+        page.hero?.intro ? (
+          <p class="mt-3 text-base opacity-80">{page.hero.intro}</p>
+        ) : null
+      }
 
-      {page.hero?.cta?.label && page.hero?.cta?.href ? (
-        <div class="mt-5">
-          <a
-            class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80"
-            href={page.hero.cta.href}
-          >
-            {page.hero.cta.label} →
-          </a>
-        </div>
-      ) : null}
+      {
+        page.hero?.cta?.label && page.hero?.cta?.href ? (
+          <div class="mt-5">
+            <a
+              class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80"
+              href={page.hero.cta.href}
+            >
+              {page.hero.cta.label} →
+            </a>
+          </div>
+        ) : null
+      }
     </header>
 
-    {page.sections?.length ? (
-      <div class="grid gap-8">
-        {page.sections.map((s) => {
-          if (s._type === "richTextSection") {
-            const html = s.body ? portableTextToHtml(s.body) : "";
-            return (
-              <section class="rounded-2xl border p-6">
-                {s.title ? <h2 class="text-xl font-semibold">{safeText(s.title)}</h2> : null}
-                {html ? (
-                  <div class={`prose max-w-none ${s.title ? "mt-4" : ""}`}>
-                    <Fragment set:html={html} />
-                  </div>
-                ) : (
-                  <p class="text-sm opacity-80">Content coming soon.</p>
-                )}
-              </section>
-            );
-          }
+    {
+      page.sections?.length ? (
+        <div class="grid gap-8">
+          {page.sections.map((s) => {
+            if (s._type === "richTextSection") {
+              const html = s.body ? portableTextToHtml(s.body) : "";
+              return (
+                <section class="rounded-2xl border p-6">
+                  {s.title ? (
+                    <h2 class="text-xl font-semibold">{safeText(s.title)}</h2>
+                  ) : null}
 
-          if (s._type === "featureListSection") {
-            const items = s.items ?? [];
-            return (
-              <section class="rounded-2xl border p-6">
-                {s.title ? <h2 class="text-xl font-semibold">{safeText(s.title)}</h2> : null}
-                {items.length ? (
-                  <ul class={`mt-4 grid gap-2 ${items.length > 6 ? "sm:grid-cols-2" : ""}`}>
-                    {items.map((it) => (
-                      <li class="rounded-xl border px-4 py-3 text-sm">{safeText(it)}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p class={`text-sm opacity-80 ${s.title ? "mt-2" : ""}`}>No items yet.</p>
-                )}
-              </section>
-            );
-          }
+                  {html ? (
+                    <div class={`prose max-w-none ${s.title ? "mt-4" : ""}`}>
+                      <Fragment set:html={html} />
+                    </div>
+                  ) : (
+                    <p class="text-sm opacity-80">Content coming soon.</p>
+                  )}
+                </section>
+              );
+            }
 
-          if (s._type === "ctaSection") {
-            return (
-              <section class="rounded-2xl border p-6">
-                {s.title ? <h2 class="text-xl font-semibold">{safeText(s.title)}</h2> : null}
-                {s.text ? <p class="mt-2 text-sm opacity-80">{safeText(s.text)}</p> : null}
-                {s.buttonLabel && s.buttonHref ? (
-                  <div class="mt-4">
-                    <a
-                      class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80"
-                      href={s.buttonHref}
+            if (s._type === "featureListSection") {
+              const items = s.items ?? [];
+              return (
+                <section class="rounded-2xl border p-6">
+                  {s.title ? (
+                    <h2 class="text-xl font-semibold">{safeText(s.title)}</h2>
+                  ) : null}
+
+                  {items.length ? (
+                    <ul
+                      class={`mt-4 grid gap-2 ${items.length > 6 ? "sm:grid-cols-2" : ""}`}
                     >
-                      {safeText(s.buttonLabel)} →
-                    </a>
-                  </div>
-                ) : null}
-              </section>
-            );
-          }
+                      {items.map((it) => (
+                        <li class="rounded-xl border px-4 py-3 text-sm">
+                          {safeText(it)}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p class={`text-sm opacity-80 ${s.title ? "mt-2" : ""}`}>
+                      No items yet.
+                    </p>
+                  )}
+                </section>
+              );
+            }
 
-          return null;
-        })}
-      </div>
-    ) : (
-      <section class="rounded-2xl border p-6">
-        <p class="text-sm opacity-80">
-          Add content in Studio for slug: <strong>{slug}</strong>.
-        </p>
-      </section>
-    )}
+            if (s._type === "ctaSection") {
+              return (
+                <section class="rounded-2xl border p-6">
+                  {s.title ? (
+                    <h2 class="text-xl font-semibold">{safeText(s.title)}</h2>
+                  ) : null}
+
+                  {s.text ? (
+                    <p class="mt-2 text-sm opacity-80">{safeText(s.text)}</p>
+                  ) : null}
+
+                  {s.buttonLabel && s.buttonHref ? (
+                    <div class="mt-4">
+                      <a
+                        class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80"
+                        href={s.buttonHref}
+                      >
+                        {safeText(s.buttonLabel)} →
+                      </a>
+                    </div>
+                  ) : null}
+                </section>
+              );
+            }
+
+            return null;
+          })}
+        </div>
+      ) : (
+        <section class="rounded-2xl border p-6">
+          <p class="text-sm opacity-80">
+            Add content in Studio for slug: <strong>{slug}</strong>.
+          </p>
+        </section>
+      )
+    }
   </main>
 </Layout>
