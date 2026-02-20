@@ -1,9 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import { getSitePageBySlug } from "../lib/sanity/sitePages";
+
+const homePage = await getSitePageBySlug("home");
 ---
 
-<Layout title="Astro Basics">
-  <main class="p-6">
-    <h1 class="text-3xl font-bold">Hello</h1>
-  </main>
+<Layout title="Midland Oil Group — UK Lubricant Manufacturer & Supplier">
+  <Hero hero={homePage?.hero} slot="above-main" />
 </Layout>

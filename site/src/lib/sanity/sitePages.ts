@@ -1,5 +1,6 @@
 // site/src/lib/sanity/sitePages.ts
 import { sanityClient } from "./client";
+import { urlForImage } from "./image";
 
 export type SitePageSection =
   | {
@@ -20,14 +21,33 @@ export type SitePageSection =
       buttonHref?: string;
     };
 
+export type HeroCta = {
+  label?: string;
+  href?: string;
+  variant?: "primary" | "secondary";
+};
+
+export type SitePageHero = {
+  // Legacy simple hero
+  headline?: string;
+  intro?: string;
+  cta?: { label?: string; href?: string };
+
+  // Rich home hero
+  eyebrow?: string;
+  headlineLines?: string[];
+  introText?: string;
+  bodyText?: string;
+  ctas?: HeroCta[];
+  videoUrl?: string;
+  videoPosterUrl?: string; // resolved from Sanity image
+  badges?: string[];
+};
+
 export type SitePageDoc = {
   title: string;
   slug: string;
-  hero?: {
-    headline?: string;
-    intro?: string;
-    cta?: { label?: string; href?: string };
-  };
+  hero?: SitePageHero;
   sections?: SitePageSection[];
   seo?: unknown;
 };
@@ -40,10 +60,15 @@ export async function getSitePageBySlug(slug: string): Promise<SitePageDoc | nul
       hero{
         headline,
         intro,
-        cta{
-          label,
-          href
-        }
+        cta{ label, href },
+        eyebrow,
+        headlineLines,
+        introText,
+        bodyText,
+        ctas[]{ label, href, variant },
+        videoUrl,
+        "videoPosterRaw": videoPoster,
+        badges
       },
       sections[]{
         _type,
@@ -59,5 +84,16 @@ export async function getSitePageBySlug(slug: string): Promise<SitePageDoc | nul
   `;
 
   const result = await sanityClient.fetch(query, { slug });
-  return result || null;
+  if (!result) return null;
+
+  // Resolve Sanity image to URL
+  if (result.hero?.videoPosterRaw) {
+    result.hero.videoPosterUrl = urlForImage(result.hero.videoPosterRaw)
+      .width(1280)
+      .quality(85)
+      .url();
+    delete result.hero.videoPosterRaw;
+  }
+
+  return result;
 }

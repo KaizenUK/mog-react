@@ -1,0 +1,311 @@
+/* ═══════════════════════════════════════════════
+   Hero — 50/50 Video + Copy Panel
+   ═══════════════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: min(90vh, 960px);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  background: #09090d;
+}
+
+/* ── Right half: video ── */
+.hero-media {
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  z-index: 0;
+}
+
+.hero-video,
+.hero-poster-still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 65%;
+}
+
+/* Static poster shown for reduced-motion users */
+.hero-poster-still {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none;
+  }
+  .hero-poster-still {
+    display: block;
+  }
+}
+
+/* Gradient: fade video into dark on the left edge (creates seamless blend) */
+.hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(9, 9, 13, 1) 0%,
+    rgba(9, 9, 13, 0.4) 30%,
+    rgba(9, 9, 13, 0.1) 70%,
+    rgba(9, 9, 13, 0.35) 100%
+  );
+  pointer-events: none;
+}
+
+/* Top + bottom edge fade */
+.hero-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(9, 9, 13, 0.5) 0%, transparent 18%),
+    linear-gradient(0deg, rgba(9, 9, 13, 0.7) 0%, transparent 28%);
+  pointer-events: none;
+}
+
+/* Full-width dark BG gradient on left (behind copy panel) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  right: 50%;
+  background: #09090d;
+  z-index: 1;
+}
+
+/* ── Left half: copy panel ── */
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  padding: 80px 56px 64px 40px;
+}
+
+.hero-copy-inner {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* Glass card behind copy */
+.hero-glass {
+  background: rgba(12, 14, 18, 0.6);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 36px 40px 32px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 32px 64px -24px rgba(0, 0, 0, 0.7);
+}
+
+/* ── Eyebrow ── */
+.hero-eyebrow {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nav-accent);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-eyebrow::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--nav-accent);
+  flex-shrink: 0;
+}
+
+/* ── Headline ── */
+.hero-headline {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 24px;
+}
+
+.hero-headline-line {
+  display: block;
+}
+
+/* Accent on last line */
+.hero-headline-line:last-child {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ── Body copy ── */
+.hero-intro {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 14px;
+}
+
+.hero-body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 32px;
+}
+
+/* ── CTAs ── */
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.hero-cta {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 26px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: transform 130ms ease, box-shadow 130ms ease, background 130ms ease;
+}
+
+.hero-cta--primary {
+  background: linear-gradient(135deg, var(--nav-accent), #b8922e);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(200, 160, 52, 0.2);
+}
+
+.hero-cta--primary:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 28px rgba(200, 160, 52, 0.38);
+}
+
+.hero-cta--secondary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.hero-cta--secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: scale(1.02);
+}
+
+/* ── Trust badges ── */
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 4px;
+}
+
+.hero-badge {
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.38);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.hero-badge::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--nav-accent);
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  /* Video becomes a cinematic band above copy on mobile */
+  .hero-media {
+    position: relative;
+    left: 0;
+    inset: unset;
+    width: 100%;
+    height: 45vw;
+    min-height: 220px;
+    max-height: 340px;
+    flex-shrink: 0;
+  }
+
+  .hero-media::after {
+    background: linear-gradient(
+      to bottom,
+      transparent 30%,
+      rgba(9, 9, 13, 0.85) 100%
+    );
+  }
+
+  .hero::before {
+    right: 0;
+    bottom: 45vw;
+    top: unset;
+    /* Only covers below the video */
+  }
+
+  .hero-copy {
+    width: 100%;
+    padding: 32px 20px 40px;
+  }
+
+  .hero-copy-inner {
+    max-width: 100%;
+  }
+
+  .hero-glass {
+    padding: 24px 20px 20px;
+  }
+
+  .hero-headline {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+  }
+
+  .hero-intro {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-ctas {
+    flex-direction: column;
+  }
+
+  .hero-cta {
+    text-align: center;
+  }
+}
