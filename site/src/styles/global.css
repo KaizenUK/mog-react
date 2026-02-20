@@ -2,16 +2,16 @@
 
 /* ── Navigation Design Tokens ── */
 :root {
-  /* Glass panel — thin header strip, heavier when scrolled */
-  --nav-glass-bg: rgba(10, 12, 16, 0.72);
-  --nav-glass-bg-scrolled: rgba(10, 12, 16, 0.90);
-  --nav-glass-blur: 18px;
-  --nav-glass-blur-scrolled: 26px;
-  --nav-glass-border: rgba(255, 255, 255, 0.06);
-  --nav-glass-border-scrolled: rgba(255, 255, 255, 0.10);
-  --nav-glass-highlight: rgba(255, 255, 255, 0.03);
+  /* Light warm-white glass nav */
+  --nav-glass-bg: rgba(252, 249, 243, 0.92);
+  --nav-glass-bg-scrolled: rgba(252, 249, 243, 0.99);
+  --nav-glass-blur: 20px;
+  --nav-glass-blur-scrolled: 28px;
+  --nav-glass-border: rgba(200, 160, 52, 0.14);
+  --nav-glass-border-scrolled: rgba(200, 160, 52, 0.20);
+  --nav-glass-highlight: rgba(200, 160, 52, 0.05);
 
-  /* Dimensions — slim like Unity */
+  /* Dimensions */
   --nav-height: 60px;
   --nav-height-scrolled: 54px;
   --nav-max-width: 1280px;
@@ -27,34 +27,34 @@
   --nav-panel-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
   --nav-underline-duration: 160ms;
 
-  /* Colors */
-  --nav-text: rgba(255, 255, 255, 0.88);
-  --nav-text-muted: rgba(255, 255, 255, 0.5);
-  --nav-text-hover: #ffffff;
+  /* Colors — dark navy text on light nav */
+  --nav-text: #1e2b44;
+  --nav-text-muted: rgba(30, 43, 68, 0.56);
+  --nav-text-hover: #0a1628;
   --nav-accent: #c8a034;
-  --nav-overlay-bg: rgba(0, 0, 0, 0.35);
+  --nav-overlay-bg: rgba(10, 20, 44, 0.40);
 }
 
 /* ── Page / Section Design Tokens ── */
 :root {
-  /* Backgrounds */
-  --page-bg: #080a0d;
-  --page-bg-alt: #0d1018;       /* slightly cooler/deeper than before for contrast */
-  --page-bg-callout: #0b0d11;
-  --page-bg-mid: #111620;       /* lifted mid-tone — use for visual break sections */
+  /* Backgrounds — proper visible navy (not near-black) */
+  --page-bg: #152038;
+  --page-bg-alt: #1a2a48;
+  --page-bg-callout: #0f1c34;
+  --page-bg-mid: #1c2e50;
 
   /* Layout */
   --page-max: 1200px;
   --section-py: clamp(60px, 8vw, 100px);
   --section-px: clamp(20px, 5vw, 60px);
 
-  /* Text */
-  --text-primary: rgba(255, 255, 255, 0.88);
-  --text-secondary: rgba(255, 255, 255, 0.60);
-  --text-muted: rgba(255, 255, 255, 0.38);
+  /* Text — white-based for dark navy sections */
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted: rgba(255, 255, 255, 0.42);
 
   /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.09);
   --border-gold: rgba(200, 160, 52, 0.35);
 }
 

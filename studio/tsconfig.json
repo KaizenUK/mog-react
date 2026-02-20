@@ -1,4 +1,5 @@
 {
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -6,10 +7,12 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "Preserve",
+    "module": "preserve",
     "moduleDetection": "force",
     "isolatedModules": true,
     "jsx": "preserve",
+    "jsxImportSource": "astro",
+    "types": ["astro/client"],
     "incremental": true
   },
   "include": ["**/*.ts", "**/*.tsx"],

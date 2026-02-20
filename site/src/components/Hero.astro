@@ -34,39 +34,22 @@ const badges: string[] = (hero.badges && hero.badges.length > 0)
   ? hero.badges
   : ["UK Manufacturer", "150+ Years Combined Experience", "West Midlands Based"];
 
-// Video: Sanity URL first, then local public file
-const videoSrc = hero.videoUrl ?? "/midland-oil-group-hero-video.mp4";
-
-// Poster: Sanity image URL first, then local public file
-const posterSrc = hero.videoPosterUrl ?? "/midland-oil-group-hero-poster.png";
+// Hero image: Sanity URL first, then local webp
+const imageSrc = hero.imageUrl ?? "/midland-oil-group-hero.webp";
 ---
 
 <section class="hero" aria-label="Midland Oil Group — Hero">
 
-  <!-- Right half: ambient video -->
+  <!-- Left half: hero image -->
   <div class="hero-media" aria-hidden="true">
-    <!-- Reduced-motion fallback: show poster as static image -->
     <img
-      class="hero-poster-still"
-      src={posterSrc}
+      class="hero-image"
+      src={imageSrc}
       alt=""
-      width="720"
-      height="1280"
       loading="eager"
       decoding="async"
+      fetchpriority="high"
     />
-    <!-- Video: autoplay, muted, loop, playsinline, preload="metadata" -->
-    <video
-      class="hero-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      poster={posterSrc}
-    >
-      <source src={videoSrc} type="video/mp4" />
-    </video>
   </div>
 
   <!-- Left half: copy -->

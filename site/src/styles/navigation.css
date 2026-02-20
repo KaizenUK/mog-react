@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════
-   Navigation — Dark Glass Mega Menu
+   Navigation — Light Premium Nav
    ═══════════════════════════════════════════════ */
 
-/* ── Header Shell — solid black by default ── */
+/* ── Header Shell — warm white glass, always visible ── */
 .site-header {
   position: fixed;
   top: 0;
@@ -10,42 +10,46 @@
   right: 0;
   z-index: 1000;
   height: var(--nav-height);
-  /* Solid by default — no show-through */
-  background: rgb(166, 170, 181);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--nav-glass-bg);
+  backdrop-filter: blur(var(--nav-glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--nav-glass-blur)) saturate(180%);
+  border-bottom: 1px solid var(--nav-glass-border);
   transition:
     height var(--nav-scroll-transition),
     background var(--nav-scroll-transition),
-    border-color var(--nav-scroll-transition);
+    border-color var(--nav-scroll-transition),
+    backdrop-filter var(--nav-scroll-transition);
 }
 
-/* Subtle top-edge inner highlight */
+/* Subtle bottom-edge gold highlight */
 .site-header::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(200, 160, 52, 0.06);
 }
 
-/* Scrolled — stays solid, tightens slightly */
+/* Scrolled — fully opaque */
 .site-header[data-scrolled="true"] {
   height: var(--nav-height-scrolled);
-  background: rgba(9, 11, 15, 1);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: var(--nav-glass-bg-scrolled);
+  backdrop-filter: blur(var(--nav-glass-blur-scrolled)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--nav-glass-blur-scrolled)) saturate(180%);
+  border-bottom-color: var(--nav-glass-border-scrolled);
+  box-shadow: 0 1px 12px rgba(30, 43, 68, 0.08);
 }
 
-/* Mega open — reveal glass layer, bleed content visible behind */
+/* Mega open — stays light, panel drops below */
 .site-header[data-mega-open] {
-  background: rgba(158, 157, 155, 0.78);
-  backdrop-filter: blur(22px) saturate(120%);
-  -webkit-backdrop-filter: blur(22px) saturate(120%);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: var(--nav-glass-bg-scrolled);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-bottom-color: transparent;
   transition:
     background 160ms ease,
-    backdrop-filter 160ms ease;
+    backdrop-filter 160ms ease,
+    border-color 160ms ease;
 }
 
 /* ── Header Inner — full bleed, logo at true left ── */
@@ -78,7 +82,6 @@
   height: 32px;
   width: auto;
   transition: height var(--nav-scroll-transition);
-  /* Force onto a transparent-background dark context */
   display: block;
 }
 
@@ -125,7 +128,7 @@
   left: 50%;
   bottom: -2px;
   width: 0;
-  height: 1px;
+  height: 1.5px;
   background: var(--nav-accent);
   transform: translateX(-50%);
   transition: width var(--nav-underline-duration) ease-out;
@@ -148,17 +151,17 @@
   text-transform: uppercase;
   color: #fff;
   text-decoration: none;
-  background: linear-gradient(135deg, var(--nav-accent), #b8922e);
+  background: linear-gradient(135deg, #d4aa3a, #b8922e);
   padding: 9px 20px;
   border-radius: 999px;
   white-space: nowrap;
   transition: transform 120ms ease, box-shadow 120ms ease;
-  box-shadow: 0 0 14px rgba(200, 160, 52, 0.18);
+  box-shadow: 0 2px 12px rgba(200, 160, 52, 0.30);
 }
 
 .nav-cta:hover {
   transform: scale(1.03);
-  box-shadow: 0 0 22px rgba(200, 160, 52, 0.35);
+  box-shadow: 0 4px 20px rgba(200, 160, 52, 0.45);
 }
 
 /* ── Background Overlay ── */
@@ -200,21 +203,19 @@
   pointer-events: auto;
 }
 
-/* ── Mega Panel — heavy smoked glass ── */
+/* ── Mega Panel — light warm white ── */
 .mega-panel {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  /* Much more solid than the header strip */
-  background: rgba(10, 12, 16, 0.94);
-  backdrop-filter: blur(28px) saturate(140%);
-  -webkit-backdrop-filter: blur(28px) saturate(140%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  /* Smoked glass inner gradient */
+  background: rgba(252, 249, 243, 0.99);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-bottom: 1px solid rgba(200, 160, 52, 0.16);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-    0 24px 48px -12px rgba(0, 0, 0, 0.6);
+    0 1px 0 0 rgba(200, 160, 52, 0.06) inset,
+    0 24px 48px -12px rgba(30, 43, 68, 0.18);
   opacity: 0;
   transform: translateY(-6px);
   pointer-events: none;
@@ -241,7 +242,7 @@
 /* Column separator lines */
 .mega-panel-inner > div + div {
   padding-left: 40px;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 1px solid rgba(30, 43, 68, 0.09);
 }
 
 /* ── Column Category Header ── */
@@ -251,10 +252,10 @@
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--nav-accent);
   margin-bottom: 18px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(200, 160, 52, 0.18);
 }
 
 /* ── Navigation Block ── */
@@ -275,7 +276,7 @@
 }
 
 .mega-block:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(200, 160, 52, 0.06);
   border-left-color: var(--nav-accent);
 }
 
@@ -283,19 +284,19 @@
   font-family: var(--font-body);
   font-size: 13.5px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.82);
+  color: #1e2b44;
   line-height: 1.3;
   transition: color 120ms ease;
 }
 
 .mega-block:hover .mega-block-title {
-  color: #fff;
+  color: #0a1628;
 }
 
 .mega-block-subtitle {
   font-family: var(--font-body);
   font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(30, 43, 68, 0.55);
   line-height: 1.4;
   margin-top: 3px;
   display: -webkit-box;
@@ -315,8 +316,8 @@
   flex-shrink: 0;
   width: 20px;
   height: 20px;
-  margin-top: 1px; /* align with cap-height of title */
-  color: rgba(255, 255, 255, 0.3);
+  margin-top: 1px;
+  color: rgba(30, 43, 68, 0.38);
   transition: color 130ms ease;
 }
 
@@ -340,7 +341,7 @@
 .mega-cta-panel p {
   font-family: var(--font-body);
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(30, 43, 68, 0.60);
   line-height: 1.6;
   margin-bottom: 22px;
   margin-top: 0;
@@ -361,7 +362,7 @@
 }
 
 .mega-cta-link:hover {
-  color: #fff;
+  color: #0a1628;
   gap: 12px;
 }
 
@@ -374,7 +375,7 @@
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(30, 43, 68, 0.45);
   text-decoration: none;
   margin-top: 18px;
   transition: color 160ms ease, gap 160ms ease;
@@ -434,22 +435,23 @@
   transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* ── Mobile Drawer ── */
+/* ── Mobile Drawer — light ── */
 .mobile-drawer {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: min(380px, 85vw);
-  background: rgba(9, 11, 15, 0.97);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(252, 249, 243, 0.99);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
   z-index: 1001;
   transform: translateX(100%);
   transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 80px 28px 120px;
+  box-shadow: -4px 0 24px rgba(30, 43, 68, 0.10);
 }
 
 .mobile-drawer[data-open] {
@@ -459,7 +461,7 @@
 .mobile-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(10, 22, 48, 0.40);
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
@@ -473,7 +475,7 @@
 
 /* Mobile nav section */
 .mobile-section {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 43, 68, 0.09);
 }
 
 .mobile-section-toggle {
@@ -524,7 +526,7 @@
 }
 
 .mobile-section-links a:hover {
-  color: var(--nav-text-hover);
+  color: var(--nav-accent);
 }
 
 /* Simple mobile link (no accordion) */
@@ -538,12 +540,12 @@
   text-transform: uppercase;
   color: var(--nav-text);
   text-decoration: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 43, 68, 0.09);
   transition: color 120ms ease;
 }
 
 .mobile-link:hover {
-  color: var(--nav-text-hover);
+  color: var(--nav-accent);
 }
 
 /* Fixed CTA at bottom of drawer */
@@ -553,7 +555,7 @@
   right: 0;
   width: min(380px, 85vw);
   padding: 16px 28px 28px;
-  background: linear-gradient(0deg, rgba(9, 11, 15, 0.98) 60%, transparent);
+  background: linear-gradient(0deg, rgba(252, 249, 243, 1) 60%, transparent);
   z-index: 1002;
   transform: translateX(100%);
   transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -573,10 +575,10 @@
   text-transform: uppercase;
   color: #fff;
   text-decoration: none;
-  background: linear-gradient(135deg, var(--nav-accent), #b8922e);
+  background: linear-gradient(135deg, #d4aa3a, #b8922e);
   padding: 14px 24px;
   border-radius: 999px;
-  box-shadow: 0 0 18px rgba(200, 160, 52, 0.22);
+  box-shadow: 0 4px 16px rgba(200, 160, 52, 0.35);
 }
 
 /* ── Responsive ── */

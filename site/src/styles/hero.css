@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════
-   Hero — 50/50 Video + Copy Panel
+   Hero — 50/50 Static Image + Copy Panel
+   Image LEFT · Copy RIGHT
    ═══════════════════════════════════════════════ */
 
 .hero {
@@ -9,52 +10,39 @@
   display: flex;
   align-items: stretch;
   overflow: hidden;
-  background: #09090d;
+  background: #0f1c34;
 }
 
-/* ── Right half: video ── */
+/* ── Left half: image ── */
 .hero-media {
   position: absolute;
   inset: 0;
-  left: 50%;
+  right: 50%;   /* covers LEFT half */
+  left: 0;
   z-index: 0;
 }
 
-.hero-video,
-.hero-poster-still {
+.hero-image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 65%;
+  object-position: center 40%;
 }
 
-/* Static poster shown for reduced-motion users */
-.hero-poster-still {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-video {
-    display: none;
-  }
-  .hero-poster-still {
-    display: block;
-  }
-}
-
-/* Gradient: fade video into dark on the left edge (creates seamless blend) */
+/* Gradient: fade image INTO dark on the right edge (creates seamless blend into copy) */
 .hero-media::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(9, 9, 13, 1) 0%,
-    rgba(9, 9, 13, 0.4) 30%,
-    rgba(9, 9, 13, 0.1) 70%,
-    rgba(9, 9, 13, 0.35) 100%
+    rgba(15, 28, 52, 0.25) 0%,
+    rgba(15, 28, 52, 0.0)  20%,
+    rgba(15, 28, 52, 0.0)  50%,
+    rgba(15, 28, 52, 0.55) 78%,
+    rgba(15, 28, 52, 1)   100%
   );
   pointer-events: none;
 }
@@ -66,29 +54,30 @@
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(9, 9, 13, 0.5) 0%, transparent 18%),
-    linear-gradient(0deg, rgba(9, 9, 13, 0.7) 0%, transparent 28%);
+    linear-gradient(180deg, rgba(15, 28, 52, 0.45) 0%, transparent 16%),
+    linear-gradient(0deg, rgba(15, 28, 52, 0.65) 0%, transparent 26%);
   pointer-events: none;
 }
 
-/* Full-width dark BG gradient on left (behind copy panel) */
+/* Full-width dark BG behind copy panel (RIGHT half) */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  right: 50%;
-  background: #09090d;
+  left: 50%;
+  background: #0f1c34;
   z-index: 1;
 }
 
-/* ── Left half: copy panel ── */
+/* ── Right half: copy panel ── */
 .hero-copy {
   position: relative;
   z-index: 2;
   width: 50%;
+  margin-left: auto;   /* push to the right */
   display: flex;
   align-items: center;
-  padding: 80px 56px 64px 40px;
+  padding: 80px 40px 64px 56px;
 }
 
 .hero-copy-inner {
@@ -96,17 +85,18 @@
   max-width: 560px;
 }
 
-/* Glass card behind copy */
+/* Premium glass card behind copy */
 .hero-glass {
-  background: rgba(12, 14, 18, 0.6);
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 36px 40px 32px;
+  background: rgba(15, 28, 52, 0.55);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(200, 160, 52, 0.18);
+  border-radius: 16px;
+  padding: 40px 44px 36px;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-    0 32px 64px -24px rgba(0, 0, 0, 0.7);
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 40px 80px -24px rgba(0, 0, 0, 0.55),
+    0 0 80px -30px rgba(200, 160, 52, 0.08);
 }
 
 /* ── Eyebrow ── */
@@ -158,7 +148,7 @@
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.74);
   margin-bottom: 14px;
 }
 
@@ -166,7 +156,7 @@
   font-family: var(--font-body);
   font-size: 14px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.52);
   margin-bottom: 32px;
 }
 
@@ -192,26 +182,26 @@
 }
 
 .hero-cta--primary {
-  background: linear-gradient(135deg, var(--nav-accent), #b8922e);
+  background: linear-gradient(135deg, #d4aa3a, #b8922e);
   color: #fff;
-  box-shadow: 0 0 16px rgba(200, 160, 52, 0.2);
+  box-shadow: 0 0 20px rgba(200, 160, 52, 0.25);
 }
 
 .hero-cta--primary:hover {
   transform: scale(1.03);
-  box-shadow: 0 0 28px rgba(200, 160, 52, 0.38);
+  box-shadow: 0 0 32px rgba(200, 160, 52, 0.42);
 }
 
 .hero-cta--secondary {
   background: transparent;
-  color: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.20);
 }
 
 .hero-cta--secondary:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.07);
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.35);
   transform: scale(1.02);
 }
 
@@ -226,7 +216,7 @@
 .hero-badge {
   font-family: var(--font-body);
   font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.40);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -240,7 +230,7 @@
   height: 4px;
   border-radius: 50%;
   background: var(--nav-accent);
-  opacity: 0.7;
+  opacity: 0.75;
   flex-shrink: 0;
 }
 
@@ -251,9 +241,10 @@
     min-height: auto;
   }
 
-  /* Video becomes a cinematic band above copy on mobile */
+  /* Image becomes a cinematic band above copy on mobile */
   .hero-media {
     position: relative;
+    right: 0;
     left: 0;
     inset: unset;
     width: 100%;
@@ -267,19 +258,21 @@
     background: linear-gradient(
       to bottom,
       transparent 30%,
-      rgba(9, 9, 13, 0.85) 100%
+      rgba(15, 28, 52, 0.90) 100%
     );
   }
 
   .hero::before {
+    left: 0;
     right: 0;
-    bottom: 45vw;
-    top: unset;
-    /* Only covers below the video */
+    top: 45vw;
+    bottom: 0;
+    inset: unset;
   }
 
   .hero-copy {
     width: 100%;
+    margin-left: 0;
     padding: 32px 20px 40px;
   }
 
@@ -289,6 +282,7 @@
 
   .hero-glass {
     padding: 24px 20px 20px;
+    border-radius: 12px;
   }
 
   .hero-headline {
