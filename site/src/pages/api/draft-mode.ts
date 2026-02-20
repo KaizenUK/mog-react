@@ -19,10 +19,29 @@ const COOKIE_NAME = 'sanity-draft-mode'
 const PREVIEW_SECRET_PARAM = 'sanity-preview-secret'
 const PREVIEW_PATHNAME_PARAM = 'sanity-preview-pathname'
 
+function resolveSafeRedirect(rawTarget: string | null, requestUrl: URL) {
+  if (!rawTarget) return '/'
+
+  try {
+    const resolved = new URL(rawTarget, requestUrl)
+
+    // Never allow bouncing back into draft-mode endpoints.
+    if (resolved.pathname.startsWith('/api/draft-mode')) return '/'
+
+    // Keep redirects same-origin only.
+    if (resolved.origin !== requestUrl.origin) return '/'
+
+    const normalized = `${resolved.pathname}${resolved.search}${resolved.hash}`
+    return normalized.startsWith('/') ? normalized : '/'
+  } catch {
+    return '/'
+  }
+}
+
 export const GET: APIRoute = async ({ cookies, url, redirect }) => {
   const action = url.searchParams.get('action')
   const previewPathname = url.searchParams.get(PREVIEW_PATHNAME_PARAM)
-  const redirectTo = previewPathname ?? url.searchParams.get('redirect') ?? '/'
+  const redirectTo = resolveSafeRedirect(previewPathname ?? url.searchParams.get('redirect'), url)
   const hasPreviewSecret = url.searchParams.has(PREVIEW_SECRET_PARAM)
   const isHttps = url.protocol === 'https:'
 
