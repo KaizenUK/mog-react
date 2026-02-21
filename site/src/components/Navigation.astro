@@ -25,10 +25,30 @@ const icons = {
 };
 
 const services = [
-  { title: "Oil Regeneration", subtitle: "Sustainable re-refining of used industrial oils", href: "/services/oil-regeneration", icon: icons.regeneration },
-  { title: "MWF Fluidcare", subtitle: "Metalworking fluid management and monitoring", href: "/services/mwf-fluidcare", icon: icons.droplets },
-  { title: "Own Label & Toll Blending", subtitle: "Custom formulation and private label blending", href: "/services/own-label-toll-blending", icon: icons.flask },
-  { title: "Product Testing & Analysis", subtitle: "Laboratory testing and oil condition analysis", href: "/services/product-testing-analysis", icon: icons.activity },
+  {
+    title: "Oil Regeneration",
+    subtitle: "Sustainable re-refining of used industrial oils",
+    href: "/services/oil-regeneration",
+    icon: icons.regeneration,
+  },
+  {
+    title: "MWF Fluidcare",
+    subtitle: "Metalworking fluid management and monitoring",
+    href: "/services/mwf-fluidcare",
+    icon: icons.droplets,
+  },
+  {
+    title: "Own Label & Toll Blending",
+    subtitle: "Custom formulation and private label blending",
+    href: "/services/own-label-toll-blending",
+    icon: icons.flask,
+  },
+  {
+    title: "Product Testing & Analysis",
+    subtitle: "Laboratory testing and oil condition analysis",
+    href: "/services/product-testing-analysis",
+    icon: icons.activity,
+  },
 ];
 
 const simpleLinks = [
@@ -40,11 +60,15 @@ const simpleLinks = [
 
 <header class="site-header" data-scrolled="false" id="site-header">
   <div class="header-inner">
-
     <!-- Left group: Logo tight to Nav items -->
     <div class="nav-left">
       <a href="/" class="nav-logo" aria-label="Midland Oil Group — Home">
-        <img src="/midland-oil-group-logo.svg" alt="Midland Oil Group" width="160" height="32" />
+        <img
+          src="/img/logos/site/svg/midland-oil-group-logo.svg"
+          alt="Midland Oil Group"
+          width="160"
+          height="32"
+        />
       </a>
 
       <!-- Desktop Nav -->
@@ -54,28 +78,32 @@ const simpleLinks = [
           class="nav-item"
           data-panel="sectors"
           aria-expanded="false"
-          aria-controls="panel-sectors"
-        >Sectors</button>
+          aria-controls="panel-sectors">Sectors</button
+        >
 
         <button
           type="button"
           class="nav-item"
           data-panel="products"
           aria-expanded="false"
-          aria-controls="panel-products"
-        >Products</button>
+          aria-controls="panel-products">Products</button
+        >
 
         <button
           type="button"
           class="nav-item"
           data-panel="services"
           aria-expanded="false"
-          aria-controls="panel-services"
-        >Services</button>
+          aria-controls="panel-services">Services</button
+        >
 
-        {simpleLinks.map((link) => (
-          <a href={link.href} class="nav-item">{link.label}</a>
-        ))}
+        {
+          simpleLinks.map((link) => (
+            <a href={link.href} class="nav-item">
+              {link.label}
+            </a>
+          ))
+        }
       </nav>
     </div>
 
@@ -101,178 +129,326 @@ const simpleLinks = [
     <div class="mega-overlay"></div>
 
     <!-- Sectors Panel -->
-    <div class="mega-panel" id="panel-sectors" role="region" aria-label="Sectors menu">
+    <div
+      class="mega-panel"
+      id="panel-sectors"
+      role="region"
+      aria-label="Sectors menu"
+    >
       <div class="mega-panel-inner">
         <div>
           <div class="mega-category">Industries We Serve</div>
-          {sectors.slice(0, 5).map((s) => (
-            <a href={`/sectors/${s.slug}`} class="mega-block">
-              <div class="mega-block-title">{s.title}</div>
-              {s.summary && <div class="mega-block-subtitle">{s.summary}</div>}
-            </a>
-          ))}
+          {
+            sectors.slice(0, 5).map((s) => (
+              <a href={`/sectors/${s.slug}`} class="mega-block">
+                <div class="mega-block-title">{s.title}</div>
+                {s.summary && (
+                  <div class="mega-block-subtitle">{s.summary}</div>
+                )}
+              </a>
+            ))
+          }
         </div>
         <div>
-          {sectors.length > 5 ? (
-            <>
-              <div class="mega-category">&nbsp;</div>
-              {sectors.slice(5, 10).map((s) => (
-                <a href={`/sectors/${s.slug}`} class="mega-block">
-                  <div class="mega-block-title">{s.title}</div>
-                  {s.summary && <div class="mega-block-subtitle">{s.summary}</div>}
-                </a>
-              ))}
-            </>
-          ) : (
-            <div class="mega-category mega-empty">&nbsp;</div>
-          )}
+          {
+            sectors.length > 5 ? (
+              <>
+                <div class="mega-category">&nbsp;</div>
+                {sectors.slice(5, 10).map((s) => (
+                  <a href={`/sectors/${s.slug}`} class="mega-block">
+                    <div class="mega-block-title">{s.title}</div>
+                    {s.summary && (
+                      <div class="mega-block-subtitle">{s.summary}</div>
+                    )}
+                  </a>
+                ))}
+              </>
+            ) : (
+              <div class="mega-category mega-empty">&nbsp;</div>
+            )
+          }
         </div>
         <div>
-          {sectors.length > 10 ? (
-            <>
-              <div class="mega-category">&nbsp;</div>
-              {sectors.slice(10, 15).map((s) => (
-                <a href={`/sectors/${s.slug}`} class="mega-block">
-                  <div class="mega-block-title">{s.title}</div>
-                  {s.summary && <div class="mega-block-subtitle">{s.summary}</div>}
-                </a>
-              ))}
-            </>
-          ) : (
-            <div class="mega-category mega-empty">&nbsp;</div>
-          )}
+          {
+            sectors.length > 10 ? (
+              <>
+                <div class="mega-category">&nbsp;</div>
+                {sectors.slice(10, 15).map((s) => (
+                  <a href={`/sectors/${s.slug}`} class="mega-block">
+                    <div class="mega-block-title">{s.title}</div>
+                    {s.summary && (
+                      <div class="mega-block-subtitle">{s.summary}</div>
+                    )}
+                  </a>
+                ))}
+              </>
+            ) : (
+              <div class="mega-category mega-empty">&nbsp;</div>
+            )
+          }
           <a href="/sectors" class="mega-view-all">
             View all sectors
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+            >
           </a>
         </div>
         <div class="mega-cta-panel">
           <div class="mega-category">Not sure where to start?</div>
-          <p>Tell us your application and we'll recommend the right product for your sector.</p>
+          <p>
+            Tell us your application and we'll recommend the right product for
+            your sector.
+          </p>
           <a href="/find-the-right-oil" class="mega-cta-link">
             FIND THE RIGHT OIL
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+            >
           </a>
         </div>
       </div>
     </div>
 
     <!-- Products Panel -->
-    <div class="mega-panel" id="panel-products" role="region" aria-label="Products menu">
+    <div
+      class="mega-panel"
+      id="panel-products"
+      role="region"
+      aria-label="Products menu"
+    >
       <div class="mega-panel-inner">
         <div>
           <div class="mega-category">Featured Products</div>
-          {products.length > 0 ? (
-            products.slice(0, 5).map((p) => (
-              <a href={`/product/${p.slug}`} class="mega-block">
-                <div class="mega-block-title">{p.title}</div>
-                {(p.navDescription || p.summary) && (
-                  <div class="mega-block-subtitle">{p.navDescription || p.summary}</div>
-                )}
-              </a>
-            ))
-          ) : (
-            <p style="font-family: var(--font-body); font-size: 13px; color: rgba(30,43,68,0.45); padding: 8px 0;">
-              No products featured yet — mark products as "Show in nav" in Studio.
-            </p>
-          )}
-        </div>
-        <div>
-          {products.length > 5 ? (
-            <>
-              <div class="mega-category">&nbsp;</div>
-              {products.slice(5).map((p) => (
+          {
+            products.length > 0 ? (
+              products.slice(0, 5).map((p) => (
                 <a href={`/product/${p.slug}`} class="mega-block">
                   <div class="mega-block-title">{p.title}</div>
                   {(p.navDescription || p.summary) && (
-                    <div class="mega-block-subtitle">{p.navDescription || p.summary}</div>
+                    <div class="mega-block-subtitle">
+                      {p.navDescription || p.summary}
+                    </div>
                   )}
                 </a>
-              ))}
-            </>
-          ) : (
-            <div class="mega-category mega-empty">&nbsp;</div>
-          )}
+              ))
+            ) : (
+              <p style="font-family: var(--font-body); font-size: 13px; color: rgba(30,43,68,0.45); padding: 8px 0;">
+                No products featured yet — mark products as "Show in nav" in
+                Studio.
+              </p>
+            )
+          }
+        </div>
+        <div>
+          {
+            products.length > 5 ? (
+              <>
+                <div class="mega-category">&nbsp;</div>
+                {products.slice(5).map((p) => (
+                  <a href={`/product/${p.slug}`} class="mega-block">
+                    <div class="mega-block-title">{p.title}</div>
+                    {(p.navDescription || p.summary) && (
+                      <div class="mega-block-subtitle">
+                        {p.navDescription || p.summary}
+                      </div>
+                    )}
+                  </a>
+                ))}
+              </>
+            ) : (
+              <div class="mega-category mega-empty">&nbsp;</div>
+            )
+          }
           <a href="/products" class="mega-view-all">
             View all products
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+            >
           </a>
         </div>
         <div>
           <div class="mega-category">Resources</div>
           <a href="/technical-library" class="mega-block">
             <div class="mega-block-title">Technical Library</div>
-            <div class="mega-block-subtitle">TDS, SDS and product documentation</div>
+            <div class="mega-block-subtitle">
+              TDS, SDS and product documentation
+            </div>
           </a>
           <a href="/downloads" class="mega-block">
             <div class="mega-block-title">Downloads</div>
-            <div class="mega-block-subtitle">Brochures, guides, specification sheets</div>
+            <div class="mega-block-subtitle">
+              Brochures, guides, specification sheets
+            </div>
           </a>
         </div>
         <div class="mega-cta-panel">
           <div class="mega-category">Need help choosing?</div>
-          <p>Match the right lubricant to your application with our product finder.</p>
+          <p>
+            Match the right lubricant to your application with our product
+            finder.
+          </p>
           <a href="/find-the-right-oil" class="mega-cta-link">
             FIND THE RIGHT OIL
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+            >
           </a>
         </div>
       </div>
     </div>
 
     <!-- Services Panel -->
-    <div class="mega-panel" id="panel-services" role="region" aria-label="Services menu">
+    <div
+      class="mega-panel"
+      id="panel-services"
+      role="region"
+      aria-label="Services menu"
+    >
       <div class="mega-panel-inner">
         <div>
           <div class="mega-category">Our Services</div>
-          {services.slice(0, 2).map((s) => (
-            <a href={s.href} class="mega-block mega-block--icon">
-              <span class="mega-block-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
-              </span>
-              <span>
-                <span class="mega-block-title">{s.title}</span>
-                <span class="mega-block-subtitle">{s.subtitle}</span>
-              </span>
-            </a>
-          ))}
+          {
+            services.slice(0, 2).map((s) => (
+              <a href={s.href} class="mega-block mega-block--icon">
+                <span class="mega-block-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    set:html={s.icon}
+                  />
+                </span>
+                <span>
+                  <span class="mega-block-title">{s.title}</span>
+                  <span class="mega-block-subtitle">{s.subtitle}</span>
+                </span>
+              </a>
+            ))
+          }
         </div>
         <div>
           <div class="mega-category">&nbsp;</div>
-          {services.slice(2).map((s) => (
-            <a href={s.href} class="mega-block mega-block--icon">
-              <span class="mega-block-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
-              </span>
-              <span>
-                <span class="mega-block-title">{s.title}</span>
-                <span class="mega-block-subtitle">{s.subtitle}</span>
-              </span>
-            </a>
-          ))}
+          {
+            services.slice(2).map((s) => (
+              <a href={s.href} class="mega-block mega-block--icon">
+                <span class="mega-block-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    set:html={s.icon}
+                  />
+                </span>
+                <span>
+                  <span class="mega-block-title">{s.title}</span>
+                  <span class="mega-block-subtitle">{s.subtitle}</span>
+                </span>
+              </a>
+            ))
+          }
         </div>
         <div>
           <div class="mega-category">Additional</div>
           <a href="/waste-oil-collection" class="mega-block mega-block--icon">
             <span class="mega-block-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.truck} />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                set:html={icons.truck}
+              />
             </span>
             <span>
               <span class="mega-block-title">Waste Oil Collection</span>
-              <span class="mega-block-subtitle">Responsible used oil collection &amp; disposal</span>
+              <span class="mega-block-subtitle"
+                >Responsible used oil collection &amp; disposal</span
+              >
             </span>
           </a>
           <a href="/services" class="mega-view-all">
             View all services
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+            >
           </a>
         </div>
         <div class="mega-cta-panel">
           <div class="mega-category">Bespoke Solutions</div>
-          <p>From custom blending to full fluidcare management — tailored to your operation.</p>
+          <p>
+            From custom blending to full fluidcare management — tailored to your
+            operation.
+          </p>
           <a href="/services" class="mega-cta-link">
             EXPLORE SERVICES
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+            >
           </a>
         </div>
       </div>
@@ -285,50 +461,89 @@ const simpleLinks = [
 <div class="mobile-drawer" id="mobile-drawer">
   <!-- Sectors accordion -->
   <div class="mobile-section">
-    <button type="button" class="mobile-section-toggle" aria-expanded="false" data-accordion>
+    <button
+      type="button"
+      class="mobile-section-toggle"
+      aria-expanded="false"
+      data-accordion
+    >
       Sectors
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg
+      >
     </button>
     <div class="mobile-section-links">
-      {sectors.map((s) => (
-        <a href={`/sectors/${s.slug}`}>{s.title}</a>
-      ))}
+      {sectors.map((s) => <a href={`/sectors/${s.slug}`}>{s.title}</a>)}
       <a href="/sectors" style="color: var(--nav-accent);">View all sectors</a>
     </div>
   </div>
 
   <!-- Products accordion -->
   <div class="mobile-section">
-    <button type="button" class="mobile-section-toggle" aria-expanded="false" data-accordion>
+    <button
+      type="button"
+      class="mobile-section-toggle"
+      aria-expanded="false"
+      data-accordion
+    >
       Products
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg
+      >
     </button>
     <div class="mobile-section-links">
-      {products.map((p) => (
-        <a href={`/product/${p.slug}`}>{p.title}</a>
-      ))}
-      <a href="/products" style="color: var(--nav-accent);">View all products</a>
+      {products.map((p) => <a href={`/product/${p.slug}`}>{p.title}</a>)}
+      <a href="/products" style="color: var(--nav-accent);">View all products</a
+      >
     </div>
   </div>
 
   <!-- Services accordion -->
   <div class="mobile-section">
-    <button type="button" class="mobile-section-toggle" aria-expanded="false" data-accordion>
+    <button
+      type="button"
+      class="mobile-section-toggle"
+      aria-expanded="false"
+      data-accordion
+    >
       Services
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg
+      >
     </button>
     <div class="mobile-section-links">
-      {services.map((s) => (
-        <a href={s.href}>{s.title}</a>
-      ))}
-      <a href="/services" style="color: var(--nav-accent);">View all services</a>
+      {services.map((s) => <a href={s.href}>{s.title}</a>)}
+      <a href="/services" style="color: var(--nav-accent);">View all services</a
+      >
     </div>
   </div>
 
   <!-- Simple links -->
-  {simpleLinks.map((link) => (
-    <a href={link.href} class="mobile-link">{link.label}</a>
-  ))}
+  {
+    simpleLinks.map((link) => (
+      <a href={link.href} class="mobile-link">
+        {link.label}
+      </a>
+    ))
+  }
 </div>
 <div class="mobile-cta-wrap">
   <a href="/find-the-right-oil" class="mobile-cta">FIND THE RIGHT OIL</a>

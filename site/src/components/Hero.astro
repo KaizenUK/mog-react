@@ -11,35 +11,48 @@ const hero = Astro.props.hero ?? {};
 
 // ── Resolved values (Sanity > hardcoded fallback) ──
 
-const eyebrow = hero.eyebrow ?? "Lubricant Suppliers & Manufacturers · West Midlands";
+const eyebrow =
+  hero.eyebrow ?? "Lubricant Suppliers & Manufacturers · West Midlands";
 
-const headlineLines = (hero.headlineLines && hero.headlineLines.length > 0)
-  ? hero.headlineLines
-  : ["UK Lubricant", "Specialists"];
+const headlineLines =
+  hero.headlineLines && hero.headlineLines.length > 0
+    ? hero.headlineLines
+    : ["UK Lubricant", "Specialists"];
 
-const introText = hero.introText ??
+const introText =
+  hero.introText ??
   "Welcome to Midland Oil Group, a leading UK lubricant supplier, manufacturer and wholesaler based in the West Midlands. We specialise in the manufacture of high-performance engine oils, gear oils and industrial oils for automotive, agricultural and industrial sectors.";
 
-const bodyText = hero.bodyText ??
+const bodyText =
+  hero.bodyText ??
   "We are a group of companies capable of completing the full sustainable circle of a lubricant's lifespan. We combine over 150 years' experience to offer a complete solution for our clients in the oil and lubricants industry.";
 
-const ctas: HeroCta[] = (hero.ctas && hero.ctas.length > 0)
-  ? hero.ctas
-  : [
-      { label: "Find the Right Oil", href: "/find-the-right-oil", variant: "primary" },
-      { label: "Our Products", href: "/products", variant: "secondary" },
-    ];
+const ctas: HeroCta[] =
+  hero.ctas && hero.ctas.length > 0
+    ? hero.ctas
+    : [
+        {
+          label: "Find the Right Oil",
+          href: "/find-the-right-oil",
+          variant: "primary",
+        },
+        { label: "Our Products", href: "/products", variant: "secondary" },
+      ];
 
-const badges: string[] = (hero.badges && hero.badges.length > 0)
-  ? hero.badges
-  : ["UK Manufacturer", "150+ Years Combined Experience", "West Midlands Based"];
+const badges: string[] =
+  hero.badges && hero.badges.length > 0
+    ? hero.badges
+    : [
+        "UK Manufacturer",
+        "150+ Years Combined Experience",
+        "West Midlands Based",
+      ];
 
 // Hero image: Sanity URL first, then local webp
-const imageSrc = hero.imageUrl ?? "/midland-oil-group-hero.webp";
+const imageSrc = hero.imageUrl ?? "/img/hero/midland-oil-group-hero.home.webp";
 ---
 
 <section class="hero" aria-label="Midland Oil Group — Hero">
-
   <!-- Left half: hero image -->
   <div class="hero-media" aria-hidden="true">
     <img
@@ -56,43 +69,44 @@ const imageSrc = hero.imageUrl ?? "/midland-oil-group-hero.webp";
   <div class="hero-copy">
     <div class="hero-copy-inner">
       <div class="hero-glass">
-
-        {eyebrow && (
-          <p class="hero-eyebrow">{eyebrow}</p>
-        )}
+        {eyebrow && <p class="hero-eyebrow">{eyebrow}</p>}
 
         <h1 class="hero-headline">
-          {headlineLines.map((line) => (
-            <span class="hero-headline-line">{line}</span>
-          ))}
+          {
+            headlineLines.map((line) => (
+              <span class="hero-headline-line">{line}</span>
+            ))
+          }
         </h1>
 
         {introText && <p class="hero-intro">{introText}</p>}
         {bodyText && <p class="hero-body">{bodyText}</p>}
 
-        {ctas.length > 0 && (
-          <div class="hero-ctas">
-            {ctas.map((cta) => (
-              <a
-                href={cta.href ?? "#"}
-                class={`hero-cta hero-cta--${cta.variant ?? "primary"}`}
-              >
-                {cta.label}
-              </a>
-            ))}
-          </div>
-        )}
+        {
+          ctas.length > 0 && (
+            <div class="hero-ctas">
+              {ctas.map((cta) => (
+                <a
+                  href={cta.href ?? "#"}
+                  class={`hero-cta hero-cta--${cta.variant ?? "primary"}`}
+                >
+                  {cta.label}
+                </a>
+              ))}
+            </div>
+          )
+        }
 
-        {badges.length > 0 && (
-          <div class="hero-badges" aria-label="Trust indicators">
-            {badges.map((badge) => (
-              <span class="hero-badge">{badge}</span>
-            ))}
-          </div>
-        )}
-
+        {
+          badges.length > 0 && (
+            <div class="hero-badges" aria-label="Trust indicators">
+              {badges.map((badge) => (
+                <span class="hero-badge">{badge}</span>
+              ))}
+            </div>
+          )
+        }
       </div>
     </div>
   </div>
-
 </section>
