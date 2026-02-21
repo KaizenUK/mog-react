@@ -2,7 +2,7 @@ import groq from "groq";
 import { sanityClient } from "./client";
 
 export type NavSector = { title: string; slug: string; summary?: string };
-export type NavProduct = { title: string; slug: string; summary?: string; navDescription?: string };
+export type NavProduct = { title: string; slug: string; summary?: string; navDescription?: string; navImageUrl?: string };
 
 export type NavigationData = {
   sectors: NavSector[];
@@ -22,7 +22,8 @@ export async function getNavigationData(): Promise<NavigationData> {
         title,
         "slug": slug.current,
         summary,
-        navDescription
+        navDescription,
+        "navImageUrl": mainImage.asset->url
       }
   }`;
 

@@ -386,6 +386,77 @@
   gap: 10px;
 }
 
+/* ── Product Image Preview (inline in col 2) ── */
+.mega-product-preview {
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.mega-preview-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(30, 43, 68, 0.05);
+  border: 1px solid rgba(30, 43, 68, 0.08);
+}
+
+.mega-preview-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.mega-preview-img[data-visible] {
+  opacity: 1;
+}
+
+/* Subtle gradient placeholder — quiet container, no text */
+.mega-preview-empty {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(30, 43, 68, 0.04) 0%, rgba(200, 160, 52, 0.04) 100%);
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.mega-preview-empty[data-hidden] {
+  opacity: 0;
+}
+
+/* Product name label below the preview image */
+.mega-preview-name {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--nav-accent);
+  letter-spacing: 0.02em;
+  margin-top: 7px;
+  min-height: 14px;
+  line-height: 1.3;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.mega-preview-name:not(:empty) {
+  opacity: 1;
+}
+
+/* Active product link — stronger highlight to show which is selected */
+.mega-block[data-active] {
+  background: rgba(200, 160, 52, 0.10);
+  border-left-color: var(--nav-accent);
+}
+
+.mega-block[data-active] .mega-block-title {
+  color: var(--nav-accent);
+}
+
 /* ── Empty column spacer ── */
 .mega-empty {
   opacity: 0;

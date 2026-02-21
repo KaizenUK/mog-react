@@ -240,7 +240,12 @@ const simpleLinks = [
           {
             products.length > 0 ? (
               products.slice(0, 5).map((p) => (
-                <a href={`/product/${p.slug}`} class="mega-block">
+                <a
+                  href={`/product/${p.slug}`}
+                  class="mega-block"
+                  data-preview-img={p.navImageUrl ? `${p.navImageUrl}?w=520&h=380&fit=crop&auto=format&q=80` : ""}
+                  data-preview-title={p.title}
+                >
                   <div class="mega-block-title">{p.title}</div>
                   {(p.navDescription || p.summary) && (
                     <div class="mega-block-subtitle">
@@ -263,7 +268,12 @@ const simpleLinks = [
               <>
                 <div class="mega-category">&nbsp;</div>
                 {products.slice(5).map((p) => (
-                  <a href={`/product/${p.slug}`} class="mega-block">
+                  <a
+                    href={`/product/${p.slug}`}
+                    class="mega-block"
+                    data-preview-img={p.navImageUrl ? `${p.navImageUrl}?w=520&h=380&fit=crop&auto=format&q=80` : ""}
+                    data-preview-title={p.title}
+                  >
                     <div class="mega-block-title">{p.title}</div>
                     {(p.navDescription || p.summary) && (
                       <div class="mega-block-subtitle">
@@ -277,6 +287,20 @@ const simpleLinks = [
               <div class="mega-category mega-empty">&nbsp;</div>
             )
           }
+          <!-- Product image preview — updates on hover in col 1 or col 2 -->
+          <div class="mega-product-preview">
+            <div class="mega-preview-img-wrap">
+              <img
+                class="mega-preview-img"
+                id="nav-preview-img"
+                src=""
+                alt=""
+                loading="eager"
+              />
+              <div class="mega-preview-empty" id="nav-preview-empty"></div>
+            </div>
+            <div class="mega-preview-name" id="nav-preview-name"></div>
+          </div>
           <a href="/products" class="mega-view-all">
             View all products
             <svg
@@ -299,12 +323,6 @@ const simpleLinks = [
             <div class="mega-block-title">Technical Library</div>
             <div class="mega-block-subtitle">
               TDS, SDS and product documentation
-            </div>
-          </a>
-          <a href="/downloads" class="mega-block">
-            <div class="mega-block-title">Downloads</div>
-            <div class="mega-block-subtitle">
-              Brochures, guides, specification sheets
             </div>
           </a>
         </div>
@@ -604,6 +622,7 @@ const simpleLinks = [
     delete megaMenu.dataset.active;
     delete header.dataset.megaOpen;
     activePanel = null;
+    resetProductPreview();
   }
 
   triggers.forEach((trigger) => {
@@ -646,6 +665,53 @@ const simpleLinks = [
   });
 
   overlay.addEventListener("click", hideAll);
+
+  // ── Product Image Preview ──
+  const previewImg = document.getElementById("nav-preview-img");
+  const previewEmpty = document.getElementById("nav-preview-empty");
+  const previewName = document.getElementById("nav-preview-name");
+
+  const productPreviewLinks = document.querySelectorAll(
+    "#panel-products .mega-block[data-preview-img]"
+  );
+
+  function clearActiveProduct() {
+    productPreviewLinks.forEach((l) => delete l.dataset.active);
+  }
+
+  function updateProductPreview(imgUrl, title, activeLink) {
+    if (!previewImg || !previewEmpty) return;
+    clearActiveProduct();
+    if (activeLink) activeLink.dataset.active = "";
+    if (previewName) previewName.textContent = title || "";
+    if (imgUrl) {
+      previewImg.src = imgUrl;
+      previewImg.alt = title || "";
+      previewImg.dataset.visible = "";
+      previewEmpty.dataset.hidden = "";
+    } else {
+      delete previewImg.dataset.visible;
+      delete previewEmpty.dataset.hidden;
+    }
+  }
+
+  function resetProductPreview() {
+    if (!previewImg || !previewEmpty) return;
+    delete previewImg.dataset.visible;
+    delete previewEmpty.dataset.hidden;
+    if (previewName) previewName.textContent = "";
+    clearActiveProduct();
+  }
+
+  productPreviewLinks.forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      updateProductPreview(
+        link.dataset.previewImg,
+        link.dataset.previewTitle,
+        link
+      );
+    });
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && activePanel) hideAll();
