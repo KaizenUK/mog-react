@@ -40,6 +40,7 @@ export type SitePageHero = {
   introText?: string;
   bodyText?: string;
   ctas?: HeroCta[];
+  imageUrl?: string; // resolved from Sanity image
   videoUrl?: string;
   videoPosterUrl?: string; // resolved from Sanity image
   badges?: string[];
@@ -138,6 +139,7 @@ export async function getSitePageBySlug(
         introText,
         bodyText,
         ctas[]{ label, href, variant },
+        "imageRaw": image,
         videoUrl,
         "videoPosterRaw": videoPoster,
         badges
@@ -192,6 +194,11 @@ export async function getSitePageBySlug(
   if (!result) return null;
 
   // Resolve Sanity image to URL
+  if (result.hero?.imageRaw) {
+    result.hero.imageUrl = urlForImage(result.hero.imageRaw).width(2200).quality(85).url();
+    delete result.hero.imageRaw;
+  }
+
   if (result.hero?.videoPosterRaw) {
     result.hero.videoPosterUrl = urlForImage(result.hero.videoPosterRaw)
       .width(1280)

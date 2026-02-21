@@ -92,6 +92,13 @@ export const sitePage = defineType({
           ],
         }),
         defineField({
+          name: "image",
+          title: "Hero image",
+          type: "image",
+          description: "Primary static hero image to use until a video is provided.",
+          options: { hotspot: true },
+        }),
+        defineField({
           name: "videoUrl",
           title: "Video URL",
           type: "url",

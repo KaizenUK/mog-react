@@ -7,7 +7,7 @@ type Props = {
 };
 
 // Use ?? so both null AND undefined fall back to empty object
-const hero = Astro.props.hero ?? {};
+const hero: SitePageHero = Astro.props.hero ?? {};
 
 // ── Resolved values (Sanity > hardcoded fallback) ──
 
@@ -50,19 +50,35 @@ const badges: string[] =
 
 // Hero image: Sanity URL first, then local webp
 const imageSrc = hero.imageUrl ?? "/img/hero/midland-oil-group-hero.home.webp";
+const videoSrc = hero.videoUrl;
 ---
 
 <section class="hero" aria-label="Midland Oil Group — Hero">
   <!-- Left half: hero image -->
   <div class="hero-media" aria-hidden="true">
-    <img
-      class="hero-image"
-      src={imageSrc}
-      alt=""
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-    />
+    {
+      videoSrc ? (
+        <video
+          class="hero-image"
+          src={videoSrc}
+          poster={hero.videoPosterUrl ?? imageSrc}
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        />
+      ) : (
+        <img
+          class="hero-image"
+          src={imageSrc}
+          alt=""
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      )
+    }
   </div>
 
   <!-- Left half: copy -->
