@@ -33,6 +33,7 @@ type Props = {
   viscosityGrade?: string;
   approvals?: string[];
   packSizes?: PackSizeResolved[];
+  unavailablePackSizes?: string[];
   docs?: TechDoc[];
 };
 
@@ -42,11 +43,17 @@ const CANONICAL: readonly string[] = [
   "1L","5L","20L","25L","200L","205L","208L","1000L","Bulk Tanker",
 ];
 
-function buildDisplaySizes(sanity: PackSizeResolved[]): PackSizeResolved[] {
+function buildDisplaySizes(
+  sanity: PackSizeResolved[],
+  unavailablePackSizes: string[] = [],
+): PackSizeResolved[] {
+  const unavailable = new Set((unavailablePackSizes ?? []).map((s) => String(s)));
   const map = new Map(sanity.map((s) => [s.label, s]));
-  const out: PackSizeResolved[] = CANONICAL.map((c) => map.get(c) ?? { label: c });
+  const out: PackSizeResolved[] = CANONICAL
+    .filter((c) => !unavailable.has(c))
+    .map((c) => map.get(c) ?? { label: c });
   for (const s of sanity) {
-    if (!CANONICAL.includes(s.label)) out.push(s);
+    if (!CANONICAL.includes(s.label) && !unavailable.has(s.label)) out.push(s);
   }
   return out;
 }
@@ -318,13 +325,13 @@ function CheckoutForm({
 type DrawerStep = "select" | "basket" | "form" | "success";
 
 function BasketDrawer({
-  open, onClose, title, slug, mainImageUrl, packSizes,
+  open, onClose, title, slug, mainImageUrl, packSizes, unavailablePackSizes,
 }: {
   open: boolean; onClose: () => void;
   title: string; slug: string;
-  mainImageUrl?: string; packSizes: PackSizeResolved[];
+  mainImageUrl?: string; packSizes: PackSizeResolved[]; unavailablePackSizes?: string[];
 }) {
-  const displaySizes = buildDisplaySizes(packSizes);
+  const displaySizes = buildDisplaySizes(packSizes, unavailablePackSizes ?? []);
 
   const [step, setStep] = useState<DrawerStep>("select");
   const [basket, setBasket] = useState<BasketItem[]>([]);
@@ -744,16 +751,16 @@ function SpecCell({ label, value }: { label: string; value: string }) {
 export default function ProductDetail({
   title, slug, summary, bodyHtml,
   mainImageUrl, viscosityGrade,
-  approvals = [], packSizes = [], docs = [],
+  approvals = [], packSizes = [], unavailablePackSizes = [], docs = [],
 }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const primaryDoc = docs[0] ?? null;
 
-  const configured = packSizes.filter((p) => p.label);
-  const sizeHint = configured.length > 0
-    ? `${configured.length} pack size${configured.length !== 1 ? "s" : ""} — ${configured[0].label} to ${configured[configured.length - 1].label}`
-    : "9 pack sizes — 1L to Bulk Tanker";
+  const displaySizes = buildDisplaySizes(packSizes, unavailablePackSizes);
+  const sizeHint = displaySizes.length > 0
+    ? `${displaySizes.length} pack size${displaySizes.length !== 1 ? "s" : ""} — ${displaySizes[0].label} to ${displaySizes[displaySizes.length - 1].label}`
+    : "Size options available on request";
 
   return (
     <>
@@ -1019,6 +1026,7 @@ export default function ProductDetail({
         slug={slug}
         mainImageUrl={mainImageUrl}
         packSizes={packSizes}
+        unavailablePackSizes={unavailablePackSizes}
       />
     </>
   );

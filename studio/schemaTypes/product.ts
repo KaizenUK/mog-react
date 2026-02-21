@@ -1,4 +1,7 @@
 import {defineField, defineType} from 'sanity'
+import {LinkedTechnicalDocsPreviewInput} from './components/LinkedTechnicalDocsPreviewInput'
+import {PackSizesOverviewInput} from './components/PackSizesOverviewInput'
+import {ProductEditorHintsInput} from './components/ProductEditorHintsInput'
 
 export const product = defineType({
   name: 'product',
@@ -64,12 +67,26 @@ export const product = defineType({
       description: 'e.g. 5W-30, ISO VG 46',
     }),
     defineField({
+      name: 'specsEditorNote',
+      title: 'Specs editor note',
+      type: 'string',
+      group: 'specs',
+      readOnly: true,
+      initialValue: '',
+      description:
+        'Pack sizes and approvals are optional display overrides. If left blank, the storefront uses defaults or hides optional chips.',
+      components: {
+        input: ProductEditorHintsInput,
+      },
+    }),
+    defineField({
       name: 'approvals',
       title: 'Approvals / specs',
       type: 'array',
       of: [{type: 'string'}],
       group: 'specs',
-      description: 'List key OEM approvals/specifications (simple v1).',
+      description:
+        'Optional override chips shown on the product page (e.g. ACEA C3, API SN). Leave blank to hide this section.',
     }),
     defineField({
       name: 'packSizes',
@@ -119,7 +136,28 @@ export const product = defineType({
           preview: {select: {title: 'label', media: 'image'}},
         },
       ],
-      description: 'Configure each available pack size with its own image, pricing, and delivery info.',
+      description:
+        'Optional overrides only. The storefront already shows standard sizes by default; use this only to add per-size data (SKU/image/price/lead time/MOQ/notes).',
+    }),
+    defineField({
+      name: 'packSizesOverview',
+      title: 'Pack sizes overview',
+      type: 'string',
+      group: 'specs',
+      readOnly: true,
+      initialValue: '',
+      components: {
+        input: PackSizesOverviewInput,
+      },
+    }),
+    defineField({
+      name: 'unavailablePackSizes',
+      title: 'Unavailable standard sizes',
+      type: 'array',
+      of: [{type: 'string'}],
+      group: 'specs',
+      description:
+        'Optional hard exclusions for standard sizes (e.g. remove 1L for this product). Managed automatically from Pack sizes overview.',
     }),
 
     defineField({
@@ -128,7 +166,32 @@ export const product = defineType({
       type: 'array',
       of: [{type: 'reference', to: [{type: 'technicalDocument'}]}],
       group: 'docs',
-      description: 'Link TDS/SDS/etc documents stored in Sanity.',
+      description:
+        'Optional manual links to docs. You can also link from the Technical Document side via Related products. Frontend merges both directions and de-duplicates automatically.',
+    }),
+    defineField({
+      name: 'docsEditorNote',
+      title: 'Documents editor note',
+      type: 'string',
+      group: 'docs',
+      readOnly: true,
+      initialValue: '',
+      description:
+        'Linking works in both directions (Product -> Technical documents and Technical document -> Related products). The site merges and de-duplicates both lists.',
+      components: {
+        input: ProductEditorHintsInput,
+      },
+    }),
+    defineField({
+      name: 'linkedTechnicalDocumentsPreview',
+      title: 'Linked documents overview',
+      type: 'string',
+      group: 'docs',
+      readOnly: true,
+      initialValue: '',
+      components: {
+        input: LinkedTechnicalDocsPreviewInput,
+      },
     }),
 
     defineField({name: 'seo', title: 'SEO', type: 'seo', group: 'seo'}),

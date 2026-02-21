@@ -36,6 +36,7 @@ export type ProductDoc = {
 
   viscosityGrade?: string;
   approvals?: string[];
+  unavailablePackSizes?: string[];
 
   packSizes?: PackSize[];
 
@@ -97,6 +98,7 @@ export async function getProductBySlug(slug: string): Promise<ProductDoc | null>
 
   viscosityGrade,
   approvals,
+  unavailablePackSizes,
 
   packSizes[] {
     label,

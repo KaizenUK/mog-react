@@ -40,6 +40,8 @@ export const technicalDocument = defineType({
       title: 'Related products',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'product'}]}],
+      description:
+        'Alternative way to link docs to products (you can also link from Product > Technical documents). Frontend combines both and removes duplicates.',
     }),
     defineField({
       name: 'tags',
