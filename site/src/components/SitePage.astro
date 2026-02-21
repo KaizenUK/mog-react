@@ -29,12 +29,13 @@ const [settings, pageResult] = await Promise.all([
   getSitePageBySlug(slug),
 ]);
 
-if (!pageResult) {
-  return new Response("Not found", { status: 404 });
-}
-
-// Narrow to a non-null variable so TS stops screaming.
-const page = pageResult;
+const isMissing = !pageResult;
+const page = pageResult ?? {
+  title: "Page not found",
+  hero: undefined,
+  sections: [],
+  seo: undefined,
+};
 
 // Page SEO is currently typed loosely in your project, so treat it safely.
 const pageSeo = (page.seo ?? {}) as MaybeSeo;
@@ -55,6 +56,16 @@ function safeText(v: unknown): string {
 <!-- Layout currently does NOT accept `seo` prop, so keep this compatible -->
 <Layout title={seo.title ?? page.title}>
   <main class="mx-auto max-w-4xl px-4 py-10">
+    {
+      isMissing ? (
+        <section class="rounded-2xl border p-6">
+          <h1 class="text-2xl font-semibold">Page not found</h1>
+          <p class="mt-2 text-sm opacity-80">
+            No Studio content exists yet for slug: <strong>{slug}</strong>.
+          </p>
+        </section>
+      ) : (
+        <>
     <header class="mb-10">
       <h1 class="text-3xl font-semibold">
         {page.hero?.headline ?? page.title}
@@ -164,6 +175,9 @@ function safeText(v: unknown): string {
             Add content in Studio for slug: <strong>{slug}</strong>.
           </p>
         </section>
+      )
+    }
+        </>
       )
     }
   </main>
