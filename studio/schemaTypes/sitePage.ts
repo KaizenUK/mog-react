@@ -19,6 +19,7 @@ export const sitePage = defineType({
       options: { source: "title", maxLength: 200 },
       description: "Use paths like: sustainability, company/about-us, services/oil-regeneration",
       validation: (Rule) => Rule.required(),
+      
     }),
 
     defineField({
@@ -90,13 +91,6 @@ export const sitePage = defineType({
               preview: { select: { title: "label", subtitle: "href" } },
             },
           ],
-        }),
-        defineField({
-          name: "image",
-          title: "Hero image",
-          type: "image",
-          description: "Primary static hero image to use until a video is provided.",
-          options: { hotspot: true },
         }),
         defineField({
           name: "videoUrl",
