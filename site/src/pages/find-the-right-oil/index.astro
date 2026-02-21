@@ -110,8 +110,8 @@ import Layout from "../../layouts/Layout.astro";
         const data = await res.json();
 
         if (!data.ok) {
-         const msg = [data.error, data.help, data.action].filter(Boolean).join(" ");
-showError(msg || "Something went wrong.");
+          const msg = [data.error, data.help, data.action].filter(Boolean).join(" ");
+          showError(msg || "Lookup is unavailable on this static preview. Please contact us for help.");
           return;
         }
 
@@ -124,7 +124,7 @@ showError(msg || "Something went wrong.");
 
         box.classList.remove("hidden");
       } catch {
-        showError("Could not reach the lookup service. Try again.");
+        showError("Lookup is unavailable on this static preview. Please contact us for help.");
       } finally {
         submit.removeAttribute("disabled");
       }

@@ -2,14 +2,12 @@ import {defineConfig} from 'astro/config'
 import sanity from '@sanity/astro'
 import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
-import node from '@astrojs/node'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
 export default defineConfig({
-  output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  output: 'static',
 
   site: "https://midlandoilgroup.co.uk",
   markdown: {

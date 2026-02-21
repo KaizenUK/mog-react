@@ -1,4 +1,17 @@
 ---
+import { sanityClient } from "../../lib/sanity/client";
+import groq from "groq";
+
+export async function getStaticPaths() {
+  const slugs = await sanityClient.fetch(groq`
+    *[_type == "post" && defined(slug.current)][]{
+      "slug": slug.current
+    }
+  `);
+
+  return slugs.map((s) => ({ params: { slug: s.slug } }));
+}
+
 const {slug} = Astro.params
 
 if (!slug || slug === 'undefined') return Astro.redirect('/news', 301)

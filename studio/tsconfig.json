@@ -1,18 +1,17 @@
 {
-  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2020",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "preserve",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-    "jsx": "preserve",
-    "jsxImportSource": "astro",
-    "types": ["astro/client"],
+    "jsx": "react-jsx",
     "incremental": true
   },
   "include": ["**/*.ts", "**/*.tsx"],

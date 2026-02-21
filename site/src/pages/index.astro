@@ -11,15 +11,9 @@ import WhyChoose from "../components/WhyChoose.astro";
 import FinalCta from "../components/FinalCta.astro";
 import { getSitePageBySlug } from "../lib/sanity/sitePages";
 import { getNavigationData } from "../lib/sanity/navigation";
-import { getClient } from "../lib/sanity/client";
-
-// Use the stega/previewDrafts client when draft-mode cookie is present,
-// otherwise the standard published client
-const isDraftMode = Astro.cookies.get('sanity-draft-mode')?.value === '1'
-const client = getClient(isDraftMode)
 
 const [homePage, navData] = await Promise.all([
-  getSitePageBySlug("home", client),
+  getSitePageBySlug("home"),
   getNavigationData(),
 ]);
 ---

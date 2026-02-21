@@ -1,4 +1,11 @@
 ---
+import { getAllProductSlugs } from "../../lib/sanity/products";
+
+export async function getStaticPaths() {
+  const slugs = await getAllProductSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
 const { slug } = Astro.params;
 
 if (!slug || slug === "undefined") {
