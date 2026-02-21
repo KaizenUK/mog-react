@@ -1,8 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getAllProductSlugs, getProductBySlug } from "../../lib/sanity/products";
+import { getAllProductSlugs, getProductBySlug, type PackSize } from "../../lib/sanity/products";
 import { portableTextToHtml } from "../../lib/portableTextToHtml.ts";
 import { urlForImage } from "../../lib/sanity/image.ts";
+import ProductDetail, { type PackSizeResolved, type TechDoc } from "../../components/ProductDetail.tsx";
 
 export async function getStaticPaths() {
   const slugs = await getAllProductSlugs();
@@ -10,51 +11,61 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-
-if (!slug) {
-  return Astro.redirect("/products", 302);
-}
+if (!slug) return Astro.redirect("/products", 302);
 
 const product = await getProductBySlug(slug);
+if (!product) return Astro.redirect("/products", 302);
 
-if (!product) {
-  return Astro.redirect("/products", 302);
-}
-
-function safeText(v) {
+function safeText(v: unknown): string {
   if (!v) return "";
   return String(v);
 }
 
+// ── Docs ─────────────────────────────────────────────────────────────────────
+
 const docsA = product.productTechnicalDocuments ?? [];
 const docsB = product.linkedTechnicalDocuments ?? [];
 
-const mergedDocs = [...docsA, ...docsB]
+const seen = new Set<string>();
+const uniqueDocs: TechDoc[] = [...docsA, ...docsB]
   .map((d) => ({
     title: safeText(d.title),
     docType: d.docType ? safeText(d.docType).toUpperCase() : "",
     language: d.language ? safeText(d.language).toUpperCase() : "",
     url: d.url ?? "",
   }))
-  .filter((d) => d.url);
+  .filter((d) => {
+    if (!d.url || seen.has(d.url)) return false;
+    seen.add(d.url);
+    return true;
+  });
 
-// Dedupe by URL so you can link either way without duplicates
-const seen = new Set();
-const uniqueDocs = mergedDocs.filter((d) => {
-  if (seen.has(d.url)) return false;
-  seen.add(d.url);
-  return true;
-});
+// ── Images ────────────────────────────────────────────────────────────────────
 
-const imgUrl = product?.mainImage ? urlForImage(product.mainImage).width(900).url() : null;
+const mainImageUrl = product?.mainImage
+  ? urlForImage(product.mainImage).width(900).quality(90).url()
+  : undefined;
+
+const resolvedPackSizes: PackSizeResolved[] = (product.packSizes ?? []).map((ps: PackSize) => ({
+  label: safeText(ps.label),
+  sku:      ps.sku      ? safeText(ps.sku)      : undefined,
+  imageUrl: ps.image    ? urlForImage(ps.image).width(900).quality(90).url() : undefined,
+  price:    ps.price    ? safeText(ps.price)    : undefined,
+  leadTime: ps.leadTime ? safeText(ps.leadTime) : undefined,
+  moq:      ps.moq      ? safeText(ps.moq)      : undefined,
+  notes:    ps.notes    ? safeText(ps.notes)    : undefined,
+}));
+
+// ── Body HTML (passed into React island to display next to the image) ─────────
+
 const bodyHtml = product?.body?.length ? portableTextToHtml(product.body) : "";
 
-// SEO (pass into Layout)
-const seoTitle = product?.seo?.title ?? product.title;
-const seoDescription = product?.seo?.description ?? product.summary ?? undefined;
-const seoNoIndex = product?.seo?.noIndex ?? false;
+// ── SEO ───────────────────────────────────────────────────────────────────────
 
-const seoCanonical =
+const seoTitle       = product?.seo?.title ?? `${product.title} | Midland Oil Group`;
+const seoDescription = product?.seo?.description ?? product.summary ?? undefined;
+const seoNoIndex     = product?.seo?.noIndex ?? false;
+const seoCanonical   =
   product?.seo?.canonicalUrl ??
   (Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined);
 ---
@@ -65,121 +76,19 @@ const seoCanonical =
   canonicalUrl={seoCanonical}
   noIndex={seoNoIndex}
 >
-  <main class="mx-auto max-w-4xl px-4 py-10">
-    <nav class="mb-6 text-sm opacity-80">
-      <a href="/products" class="hover:underline">Products</a>
-      <span class="mx-2">/</span>
-      <span>{product.title}</span>
-    </nav>
-
-    <header class="mb-8">
-      <h1 class="text-3xl font-semibold">{product.title}</h1>
-
-      {product.summary ? (
-        <p class="mt-3 text-base opacity-80">{product.summary}</p>
-      ) : null}
-    </header>
-
-    {imgUrl ? (
-      <figure class="mb-10">
-        <img
-          src={imgUrl}
-          alt={product.title}
-          loading="lazy"
-          class="w-full rounded-2xl border"
-        />
-      </figure>
-    ) : null}
-
-    {bodyHtml ? (
-      <section class="prose prose-neutral mb-10 max-w-none">
-        <div set:html={bodyHtml} />
-      </section>
-    ) : null}
-
-    {(product.viscosityGrade || product.approvals?.length) ? (
-      <section class="mb-10">
-        <h2 class="text-xl font-semibold">Key specifications</h2>
-
-        <dl class="mt-4 grid gap-3 sm:grid-cols-2">
-          {product.viscosityGrade ? (
-            <div class="rounded-2xl border p-4">
-              <dt class="text-sm font-medium opacity-80">Viscosity grade</dt>
-              <dd class="mt-1 text-sm">{product.viscosityGrade}</dd>
-            </div>
-          ) : null}
-
-          {product.approvals?.length ? (
-            <div class="rounded-2xl border p-4 sm:col-span-2">
-              <dt class="text-sm font-medium opacity-80">Approvals / specs</dt>
-              <dd class="mt-2 text-sm">
-                <ul class="flex flex-wrap gap-2">
-                  {product.approvals.map((a) => (
-                    <li class="rounded-full border px-3 py-1 text-xs">{safeText(a)}</li>
-                  ))}
-                </ul>
-              </dd>
-            </div>
-          ) : null}
-        </dl>
-      </section>
-    ) : null}
-
-    {product.packSizes?.length ? (
-      <section class="mb-10">
-        <h2 class="text-xl font-semibold">Pack sizes</h2>
-        <ul class="mt-4 grid gap-3 sm:grid-cols-2">
-          {product.packSizes.map((ps) => (
-            <li class="rounded-2xl border p-4">
-              <p class="text-sm font-medium">{safeText(ps.label)}</p>
-              {ps.sku ? <p class="mt-1 text-xs opacity-70">SKU: {safeText(ps.sku)}</p> : null}
-            </li>
-          ))}
-        </ul>
-      </section>
-    ) : null}
-
-    {uniqueDocs.length ? (
-      <section class="mb-10">
-        <h2 class="text-xl font-semibold">Technical documents</h2>
-        <ul class="mt-4 grid gap-3">
-          {uniqueDocs.map((d) => (
-            <li class="rounded-2xl border p-4">
-              <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p class="text-sm font-medium">{d.title}</p>
-                  {(d.docType || d.language) ? (
-                    <p class="text-xs opacity-70">
-                      {d.docType}{d.docType && d.language ? " • " : ""}{d.language}
-                    </p>
-                  ) : null}
-                </div>
-
-                <a
-                  class="mt-2 inline-flex w-fit items-center justify-center rounded-full border px-4 py-2 text-sm font-medium hover:opacity-80 sm:mt-0"
-                  href={d.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download PDF
-                </a>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ) : null}
-
-    <section class="rounded-2xl border p-6">
-      <h2 class="text-xl font-semibold">Get a quote</h2>
-      <p class="mt-2 text-sm opacity-80">
-        Tell us what you need and we’ll come back with availability and pricing.
-      </p>
-      <div class="mt-4">
-        <a class="inline-flex rounded-full border px-5 py-2 text-sm font-medium hover:opacity-80" href="/contact-us">
-          Enquire →
-        </a>
-      </div>
-    </section>
-  </main>
+  <!-- Product page uses above-main slot for full-width layout control -->
+  <div slot="above-main">
+    <ProductDetail
+      client:load
+      title={product.title}
+      slug={product.slug}
+      summary={product.summary}
+      bodyHtml={bodyHtml}
+      mainImageUrl={mainImageUrl}
+      viscosityGrade={product.viscosityGrade}
+      approvals={product.approvals ?? []}
+      packSizes={resolvedPackSizes}
+      docs={uniqueDocs}
+    />
+  </div>
 </Layout>

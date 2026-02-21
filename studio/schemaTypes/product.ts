@@ -81,13 +81,45 @@ export const product = defineType({
           type: 'object',
           name: 'packSize',
           fields: [
-            defineField({name: 'label', title: 'Label', type: 'string', description: 'e.g. 1L, 5L, 205L'}),
+            defineField({name: 'label', title: 'Label', type: 'string', description: 'e.g. 1L, 5L, 205L, Bulk Tanker'}),
             defineField({name: 'sku', title: 'SKU (optional)', type: 'string'}),
+            defineField({
+              name: 'image',
+              title: 'Size image',
+              type: 'image',
+              options: {hotspot: true},
+              description: 'Product image for this specific pack size. Falls back to main product image.',
+            }),
+            defineField({
+              name: 'price',
+              title: 'Guide price',
+              type: 'string',
+              description: 'Optional display price — e.g. "POA", "£12.50/L", "Call for pricing"',
+            }),
+            defineField({
+              name: 'leadTime',
+              title: 'Lead time',
+              type: 'string',
+              description: 'e.g. "Next day delivery", "5–7 working days", "3–5 working days"',
+            }),
+            defineField({
+              name: 'moq',
+              title: 'Minimum order quantity',
+              type: 'string',
+              description: 'e.g. "1 unit", "Minimum 1 drum", "Full tanker load only"',
+            }),
+            defineField({
+              name: 'notes',
+              title: 'Size notes',
+              type: 'text',
+              rows: 2,
+              description: 'Any notes specific to this size — delivery, handling, hazmat, etc.',
+            }),
           ],
-          preview: {select: {title: 'label'}},
+          preview: {select: {title: 'label', media: 'image'}},
         },
       ],
-      description: 'Simple selector for now; future-ready for variants/commerce later.',
+      description: 'Configure each available pack size with its own image, pricing, and delivery info.',
     }),
 
     defineField({

@@ -7,6 +7,16 @@ export type ProductListItem = {
   summary?: string;
 };
 
+export type PackSize = {
+  label?: string;
+  sku?: string;
+  image?: any;       // raw Sanity image reference — resolve with urlForImage on the page
+  price?: string;    // e.g. "POA", "£12.50/L"
+  leadTime?: string; // e.g. "Next day delivery"
+  moq?: string;      // e.g. "1 unit minimum"
+  notes?: string;    // size-specific handling notes
+};
+
 export type ProductDoc = {
   _id?: string;
 
@@ -27,7 +37,7 @@ export type ProductDoc = {
   viscosityGrade?: string;
   approvals?: string[];
 
-  packSizes?: Array<{ label?: string; sku?: string }>;
+  packSizes?: PackSize[];
 
   productTechnicalDocuments?: Array<{
     title?: string;
@@ -78,19 +88,24 @@ export async function getProductBySlug(slug: string): Promise<ProductDoc | null>
   mainImage,
   body,
 
-seo{
-  title,
-  description,
-  noIndex,
-  canonicalUrl
-},
+  seo{
+    title,
+    description,
+    noIndex,
+    canonicalUrl
+  },
 
   viscosityGrade,
   approvals,
 
   packSizes[] {
     label,
-    sku
+    sku,
+    image,
+    price,
+    leadTime,
+    moq,
+    notes
   },
 
   "productTechnicalDocuments": technicalDocuments[]->{
